@@ -152,6 +152,8 @@ function startHero () {
 (function spotlight () {
   const el = $('#spotlight');
   if (!el || REDUCED) return;
+  // no cursor, no stage light. Saves battery on phones too.
+  if (!window.matchMedia('(hover:hover)').matches) { el.remove(); return; }
 
   let tx = innerWidth * 0.5, ty = innerHeight * 0.35;
   let cx = tx, cy = ty;
