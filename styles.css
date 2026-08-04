@@ -765,6 +765,44 @@ a{ color:inherit; }
 @media (min-width:901px){
   }
 
+
+/* ---------------------------------------------------------
+   Phones only: the record becomes a backdrop and the words
+   take the middle of the screen. Desktop is untouched.
+   --------------------------------------------------------- */
+@media (max-width:768px){
+  .hero{
+    justify-content:center;
+    min-height:88svh;
+    text-align:center;
+    padding-bottom:clamp(30px,5vh,52px);
+  }
+  .hero__grid{
+    display:flex; flex-direction:column; align-items:center;
+    width:100%;
+  }
+  .hero__head{ max-width:none; margin-bottom:clamp(26px,5vh,40px); }
+  .hero .eyebrow{ margin-bottom:18px; font-size:10px; letter-spacing:.09em; }
+
+  .hero__actions{
+    width:100%; flex-direction:column; align-items:stretch; gap:10px;
+  }
+  .hero__actions .btn{ width:100%; }
+
+  /* centred behind the text, faded back so nothing competes */
+  .galaxy{
+    width:min(124vw,540px);
+    top:50%; left:50%; right:auto; bottom:auto;
+    transform:translate(-50%,-50%);
+    opacity:.16;
+  }
+  .stage__glow{
+    width:150vw; height:150vw;
+    left:-25vw; right:auto; top:50%; margin-top:-75vw;
+    animation:none; opacity:.34; filter:blur(40px);
+  }
+}
+
 /* ---------------------------------------------------------
    Reduced motion - keep everything, drop the movement
    --------------------------------------------------------- */
