@@ -757,7 +757,10 @@ a{ color:inherit; }
 @media (max-width:620px){
   .scores{ grid-template-columns:1fr; }
   .facts{ grid-template-columns:1fr; }
-  .footer{ grid-template-columns:1fr; }
+  .footer{ grid-template-columns:repeat(2,1fr); gap:30px 20px; }
+  .footer__brand{ grid-column:1 / -1; }
+  .footer__logo{ width:46px; margin-bottom:12px; }
+  .footer__word{ font-size:clamp(30px,10vw,44px); }
   .hero__actions .btn{ width:100%; }
   .program__list li{ grid-template-columns:1fr; gap:8px; }
 }
@@ -801,6 +804,10 @@ a{ color:inherit; }
     left:-25vw; right:auto; top:50%; margin-top:-75vw;
     animation:none; opacity:.34; filter:blur(40px);
   }
+
+  /* the pointer-following stage light has no pointer to follow here,
+     so it just reads as a stray tint over the top of the screen */
+  .spotlight{ display:none; }
 }
 
 /* ---------------------------------------------------------
