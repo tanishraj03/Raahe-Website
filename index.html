@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Raahe.co | Every dream deserves a stage</title>
+<meta name="description" content="Raahe is India's first ecosystem for artists. Open mics, first paid gigs and a community that turns up, built in Bengaluru." />
+<meta name="theme-color" content="#0E0E0E" />
+
+<meta property="og:title" content="Raahe.co | Every dream deserves a stage" />
+<meta property="og:description" content="India's first ecosystem for artists. Open mics, first paid gigs and a community that turns up." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://raahe.co" />
+<meta property="og:image" content="images/og-image.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href="favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=League+Spartan:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <span class="loader__label mono">Soundcheck</span>
+    <span class="loader__count" id="loaderCount">00</span>
+  </div>
+  <div class="loader__bar"><i id="loaderBar"></i></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="spotlight" id="spotlight" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" aria-label="Raahe.co home">
+    <img class="nav__mark" src="images/logo.png" alt="" />
+    <span class="nav__word">raahe.co</span>
+  </a>
+
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#about">About</a>
+    <a href="#openmic">Open mic</a>
+    <a href="#artists">Artists</a>
+    <a href="#volunteer">Volunteer</a>
+    <a href="#floor">Join</a>
+  </nav>
+
+  <a class="btn btn--pink nav__cta magnetic" href="#encore"><span>Register</span></a>
+
+  <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+    <i></i><i></i>
+  </button>
+</header>
+
+<div class="menu" id="mobileMenu" hidden>
+  <a href="#about"><span class="mono">01</span> About us</a>
+  <a href="#sofar"><span class="mono">02</span> What we have done</a>
+  <a href="#openmic"><span class="mono">03</span> Open mic</a>
+  <a href="#artists"><span class="mono">04</span> Artists program</a>
+  <a href="#volunteer"><span class="mono">05</span> Volunteer</a>
+  <a href="#floor"><span class="mono">06</span> Two ways in</a>
+  <a href="#crew"><span class="mono">07</span> Our team</a>
+  <a class="menu__cta" href="#encore">Register now</a>
+</div>
+
+<aside class="rail" id="rail" aria-hidden="true">
+  <span class="rail__now mono" id="railNow">19:00 · Doors</span>
+  <ol class="rail__list" id="railList"></ol>
+</aside>
+
+<main id="main">
+
+<!-- ============ 00 · DOORS ============ -->
+<section class="hero" id="top" data-slot="00" data-name="Doors" data-time="19:00" data-gel="pink">
+  <div class="hero__grid">
+    <p class="eyebrow mono reveal">Bengaluru · India's first ecosystem for artists</p>
+
+    <h1 class="hero__head">
+      <span class="line"><span>Every dream</span></span>
+      <span class="line"><span>deserves a <em>stage</em>.</span></span>
+      <span class="line"><span>We build them.</span></span>
+    </h1>
+
+    <div class="hero__actions reveal">
+      <a class="btn btn--pink magnetic" href="#encore"><span>Register as an artist</span></a>
+      <a class="btn btn--ghost magnetic" href="mailto:raahe.co@gmail.com?subject=Partnership%20Request%20-%20Open%20Mic"><span>Host an open mic</span></a>
+    </div>
+  </div>
+
+  <!-- The galaxy: a record at the centre, notes and satellites in orbit,
+       sound rings pushing outward. Everything here is decorative. -->
+  <div class="hero__stage" aria-hidden="true">
+    <div class="stage__glow"></div>
+    <div class="galaxy">
+      <svg viewBox="0 0 400 400">
+        <defs>
+          <radialGradient id="coreG" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#F04E98" stop-opacity=".9"/>
+            <stop offset="55%" stop-color="#F04E98" stop-opacity=".22"/>
+            <stop offset="100%" stop-color="#F04E98" stop-opacity="0"/>
+          </radialGradient>
+          <g id="note">
+            <ellipse cx="0" cy="0" rx="6" ry="4.6" transform="rotate(-22)"/>
+            <rect x="4.4" y="-24" width="1.9" height="24"/>
+            <path d="M6.3 -24c5 2.4 8.6 4.6 9.4 9.2 .6-6.2-3.4-9.6-9.4-12.4z"/>
+          </g>
+        </defs>
+
+        <circle cx="200" cy="200" r="196" fill="url(#coreG)"/>
+
+        <!-- sound rings -->
+        <g class="waves" fill="none" stroke="#F04E98" stroke-width="1.2">
+          <circle cx="200" cy="200" r="78" style="--d:0s"/>
+          <circle cx="200" cy="200" r="78" style="--d:1.6s"/>
+          <circle cx="200" cy="200" r="78" style="--d:3.2s"/>
+        </g>
+
+        <!-- outer orbit -->
+        <g class="orb orb--a">
+          <circle cx="200" cy="200" r="186" fill="none" stroke="#F4F5F5" stroke-opacity=".1"/>
+          <circle cx="200" cy="14"  r="4.5" fill="#F04E98"/>
+          <circle cx="361" cy="293" r="3"   fill="#F4F5F5" fill-opacity=".7"/>
+          <circle cx="39"  cy="293" r="5.5" fill="#F04E98" fill-opacity=".55"/>
+          <circle cx="360" cy="107" r="2.4" fill="#F4F5F5" fill-opacity=".5"/>
+          <circle cx="200" cy="386" r="3.4" fill="#F4F5F5" fill-opacity=".45"/>
+        </g>
+
+        <!-- notes orbit -->
+        <g class="orb orb--b" fill="#F4F5F5" fill-opacity=".82">
+          <circle cx="200" cy="200" r="140" fill="none" stroke="#F4F5F5" stroke-opacity=".08"/>
+          <use href="#note" x="200" y="60"/>
+          <use href="#note" x="340" y="200"/>
+          <use href="#note" x="200" y="340"/>
+          <use href="#note" x="60"  y="200"/>
+        </g>
+
+        <!-- inner orbit -->
+        <g class="orb orb--c">
+          <circle cx="200" cy="200" r="104" fill="none" stroke="#F04E98" stroke-opacity=".22" stroke-dasharray="3 9"/>
+          <circle cx="200" cy="96"  r="3.6" fill="#F04E98"/>
+          <circle cx="290" cy="252" r="2.6" fill="#F4F5F5" fill-opacity=".8"/>
+          <circle cx="110" cy="252" r="3"   fill="#F04E98" fill-opacity=".7"/>
+        </g>
+
+        <!-- the record -->
+        <g class="vinyl">
+          <circle cx="200" cy="200" r="74" fill="#141414" stroke="#F4F5F5" stroke-opacity=".18"/>
+          <g fill="none" stroke="#F4F5F5" stroke-opacity=".14">
+            <circle cx="200" cy="200" r="66"/>
+            <circle cx="200" cy="200" r="58"/>
+            <circle cx="200" cy="200" r="50"/>
+            <circle cx="200" cy="200" r="42"/>
+            <circle cx="200" cy="200" r="34"/>
+          </g>
+          <circle cx="200" cy="200" r="24" fill="#F04E98"/>
+          <circle cx="200" cy="200" r="4"  fill="#0E0E0E"/>
+          <path d="M200 126a74 74 0 0 1 64 37" fill="none" stroke="#F4F5F5" stroke-opacity=".5" stroke-width="1.5"/>
+        </g>
+
+        <!-- drifting specks -->
+        <g class="stars" fill="#F4F5F5">
+          <circle cx="88"  cy="70"  r="1.6" style="--d:.2s"/>
+          <circle cx="318" cy="58"  r="1.2" style="--d:1.1s"/>
+          <circle cx="356" cy="168" r="1.8" style="--d:2.3s"/>
+          <circle cx="52"  cy="216" r="1.4" style="--d:.7s"/>
+          <circle cx="120" cy="352" r="1.6" style="--d:1.8s"/>
+          <circle cx="300" cy="348" r="1.2" style="--d:2.9s"/>
+          <circle cx="248" cy="42"  r="1"   style="--d:1.4s"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Disciplines we book. Written out twice so the loop never jumps. -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track" data-marquee data-speed="0.6">
+      <span>Singers</span><i>✳</i><span>Stand-up comedians</span><i>✳</i><span>Dancers</span><i>✳</i>
+      <span>Instrumentalists</span><i>✳</i><span>Storytellers</span><i>✳</i><span>Poets</span><i>✳</i>
+      <span>Rappers</span><i>✳</i><span>Beatboxers</span><i>✳</i><span>Actors</span><i>✳</i><span>Bands</span><i>✳</i>
+      <span>Singers</span><i>✳</i><span>Stand-up comedians</span><i>✳</i><span>Dancers</span><i>✳</i>
+      <span>Instrumentalists</span><i>✳</i><span>Storytellers</span><i>✳</i><span>Poets</span><i>✳</i>
+      <span>Rappers</span><i>✳</i><span>Beatboxers</span><i>✳</i><span>Actors</span><i>✳</i><span>Bands</span><i>✳</i>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 · ABOUT US ============ -->
+<section class="slot slot--about" id="about" data-slot="01" data-name="About us" data-time="19:30" data-gel="pink">
+
+  <div class="about">
+    <div class="about__copy">
+      <p class="eyebrow mono reveal">01 · About us</p>
+      <h2 class="statement">
+        <span class="line"><span>Raahe is building India's first</span></span>
+        <span class="line"><span><em>ecosystem for artists</em>. A stage</span></span>
+        <span class="line"><span>to show raw talent, and a way</span></span>
+        <span class="line"><span>to get paid for it.</span></span>
+      </h2>
+      <p class="about__lede reveal">
+        We started Raahe because the maths never added up. India watches more live performance
+        than almost anywhere on earth, and the people making it still struggle to pay rent.
+        So we built the bit that was missing. Nights where new artists actually get a stage,
+        clients who actually pay them, and a crowd that turns up for both.
+      </p>
+      <p class="about__lede reveal">
+        No follower count. No showreel. No contacts in the industry. If you can hold a room,
+        you are in.
+      </p>
+    </div>
+
+    <!-- Your own video file, so it plays here instead of sending people to Instagram.
+         Put it at video/raahe.mp4 and a still frame at images/video-poster.jpg -->
+    <div class="film reveal">
+      <video id="film" poster="images/video-poster.jpg" muted loop playsinline autoplay preload="metadata">
+        <source src="video/raahe.mp4" type="video/mp4" />
+      </video>
+      <button class="film__sound" id="filmSound" type="button" aria-pressed="false">
+        <span class="mono">Sound on</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="cards">
+    <article class="card" style="--i:0">
+      <div class="card__body">
+        <span class="card__idx mono">Centre stage</span>
+        <h3 class="card__title">A real room, a real audience</h3>
+        <p>Our open mics give artists a proper stage, a proper sound system and a hundred people who came to listen. Not a phone camera in a bedroom.</p>
+      </div>
+      <div class="card__art" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#shape-burst"/></svg></div>
+    </article>
+
+    <article class="card" style="--i:1">
+      <div class="card__body">
+        <span class="card__idx mono">First paid gig</span>
+        <h3 class="card__title">The first paycheck for the art</h3>
+        <p>We connect artists to venues, brands and events that pay. For most of the people we scout, this is the first money their craft has ever made them.</p>
+      </div>
+      <div class="card__art" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#shape-star"/></svg></div>
+    </article>
+
+    <article class="card" style="--i:2">
+      <div class="card__body">
+        <span class="card__idx mono">Open to everyone</span>
+        <h3 class="card__title">Talent is the only filter</h3>
+        <p>No follower count, no showreel, no contacts needed. If you can hold a room, you belong on the lineup.</p>
+      </div>
+      <div class="card__art" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#shape-hex"/></svg></div>
+    </article>
+
+    <article class="card" style="--i:3">
+      <div class="card__body">
+        <span class="card__idx mono">Portfolio</span>
+        <h3 class="card__title">Proof you can send anyone</h3>
+        <p>Every performance becomes part of an artist profile. Clips, credits and past gigs in one link, ready for the next booking.</p>
+      </div>
+      <div class="card__art" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#shape-flower"/></svg></div>
+    </article>
+
+    <article class="card" style="--i:4">
+      <div class="card__body">
+        <span class="card__idx mono">Community and collab</span>
+        <h3 class="card__title">The people you make things with</h3>
+        <p>A guitarist meets a poet meets a producer. Most of what our artists build next comes out of a room we put them in.</p>
+      </div>
+      <div class="card__art" aria-hidden="true"><svg viewBox="0 0 200 200"><use href="#shape-burst"/></svg></div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 02 · WHAT WE HAVE DONE SO FAR ============ -->
+<section class="slot slot--sofar" id="sofar" data-slot="02" data-name="So far" data-time="20:00" data-gel="pink">
+  <header class="slot__head">
+    <p class="eyebrow mono reveal">02 · Two years in</p>
+    <h2 class="h2"><span class="line"><span>What we have done so far</span></span></h2>
+  </header>
+
+  <div class="scores">
+    <div class="score reveal">
+      <span class="score__num" data-count="200" data-suffix="+">0+</span>
+      <p>performance gigs and opportunities given to our artists</p>
+    </div>
+    <div class="score reveal">
+      <span class="score__num" data-count="27" data-prefix="₹" data-suffix="L+">₹0L+</span>
+      <p>paid out to artists for performances, gigs and content</p>
+    </div>
+    <div class="score reveal">
+      <span class="score__num" data-count="100" data-suffix="+">0+</span>
+      <p>artists scouted and helped to their first paycheck</p>
+    </div>
+    <div class="score reveal">
+      <span class="score__num" data-count="1000" data-suffix="+">0+</span>
+      <p>community members who have joined us at Raahe</p>
+    </div>
+  </div>
+
+  <div class="trusted">
+    <p class="trusted__label mono reveal">Rooms and brands we have worked with</p>
+    <div class="ticker ticker--sm">
+      <div class="ticker__track" data-marquee data-speed="0.35" data-dir="1">
+        <span>Starbucks</span><i>·</i><span>Obeya</span><i>·</i><span>Forum South Bengaluru</span><i>·</i>
+        <span>SOCIAL</span><i>·</i><span>Under 25</span><i>·</i><span>Atta Galatta</span><i>·</i><span>PJJA</span><i>·</i>
+        <span>Starbucks</span><i>·</i><span>Obeya</span><i>·</i><span>Forum South Bengaluru</span><i>·</i>
+        <span>SOCIAL</span><i>·</i><span>Under 25</span><i>·</i><span>Atta Galatta</span><i>·</i><span>PJJA</span><i>·</i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · OPEN MIC ============ -->
+<section class="slot slot--openmic" id="openmic" data-slot="03" data-name="Open mic" data-time="20:30" data-gel="violet">
+  <header class="slot__head">
+    <p class="eyebrow mono reveal">03 · Raahe offline</p>
+    <h2 class="h2">
+      <span class="line"><span>The <em>open mic</em>,</span></span>
+      <span class="line"><span>run properly.</span></span>
+    </h2>
+    <p class="slot__lede reveal">
+      A Raahe Open Mic is a community night where new artists get their first spotlight.
+      Musicians, poets, comedians and storytellers, in front of a real audience. We put the
+      whole evening together ourselves, from finding the lineup to bringing in small businesses,
+      so it feels closer to a mini festival than a sign up sheet on a clipboard.
+    </p>
+  </header>
+
+  <!-- Photos from the open mics. Save them into images/ as openmic-01.jpg to openmic-10.jpg.
+       Both halves of this list must match or the loop will jump. -->
+  <div class="strip" aria-label="Photos from Raahe Open Mics">
+    <div class="strip__track" data-marquee data-speed="0.55">
+      <figure class="shot"><img src="images/openmic-01.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-02.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-03.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-04.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-05.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-06.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-07.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-08.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-09.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-10.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+
+      <figure class="shot"><img src="images/openmic-01.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-02.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-03.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-04.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-05.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-06.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-07.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-08.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-09.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/openmic-10.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+    </div>
+  </div>
+
+  <h3 class="sub reveal">The open mic in numbers</h3>
+  <ul class="facts">
+    <li class="reveal"><b data-count="1300" data-suffix="+">0+</b><span>people through the door in the last year</span></li>
+    <li class="reveal"><b data-count="15" data-suffix="+">0+</b><span>open mics we have run so far</span></li>
+    <li class="reveal"><b data-count="20" data-suffix="+">0+</b><span>new artists on stage at every event</span></li>
+    <li class="reveal"><b data-count="40" data-suffix="+">0+</b><span>small businesses supported through our open mics</span></li>
+    <li class="reveal"><b class="fact__word">#1</b><span>result for Open Mic on the Zomato District app</span></li>
+  </ul>
+
+  <aside class="tickets reveal">
+    <div class="tickets__copy">
+      <p class="mono">Next open mic</p>
+      <h3>Tickets are live on District.</h3>
+      <p class="tickets__sub">Come watch, or put your name down to play. Both are worth your evening.</p>
+    </div>
+    <a class="btn btn--pink magnetic" href="https://link.district.in/DSTRKT/0q8uw5ie" target="_blank" rel="noopener">
+      <span>Get tickets</span>
+    </a>
+  </aside>
+</section>
+
+<!-- ============ 04 · ARTISTS PROGRAM ============ -->
+<section class="slot slot--artists" id="artists" data-slot="04" data-name="Artists program" data-time="21:15" data-gel="pink">
+  <header class="slot__head">
+    <p class="eyebrow mono reveal">04 · Selected artists</p>
+    <h2 class="h2">
+      <span class="line"><span>the <em>artists.</em> program</span></span>
+    </h2>
+    <p class="slot__lede reveal">
+      An invite only track for artists we think are ready to go further. You get mentorship,
+      introductions that actually turn into work, and first call on the best paying gigs,
+      collaborations and events we run. Musician, dancer, actor or comic, if the craft is
+      there the program is built to take it professional.
+    </p>
+  </header>
+
+  <!-- Artists from the program. Save them into images/ as artist-01.jpg to artist-06.jpg. -->
+  <div class="strip strip--tall" aria-label="Artists in the program">
+    <div class="strip__track" data-marquee data-speed="0.4" data-dir="1">
+      <figure class="shot"><img src="images/artist-01.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-02.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-03.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-04.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-05.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-06.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+
+      <figure class="shot"><img src="images/artist-01.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-02.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-03.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-04.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-05.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+      <figure class="shot"><img src="images/artist-06.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
+    </div>
+  </div>
+
+  <ul class="program__list">
+    <li class="reveal"><span class="mono">Mentorship</span><p>Regular sessions with working artists and industry people who have already done the thing you are trying to do.</p></li>
+    <li class="reveal"><span class="mono">Network</span><p>Direct introductions to venues, labels, brands and organisers. No cold DMs.</p></li>
+    <li class="reveal"><span class="mono">Priority gigs</span><p>First access to the best paid gigs, collabs and events on our roster.</p></li>
+  </ul>
+
+  <div class="program__actions reveal">
+    <a class="btn btn--pink magnetic" href="https://forms.gle/EJzCDZ1ePk9BEDeB6" target="_blank" rel="noopener"><span>Apply to the program</span></a>
+  </div>
+</section>
+
+<!-- ============ 05 · VOLUNTEER ============ -->
+<section class="slot slot--volunteer" id="volunteer" data-slot="05" data-name="Volunteer" data-time="21:40" data-gel="orange">
+  <div class="volunteer">
+    <div>
+      <p class="eyebrow mono reveal">05 · Volunteer</p>
+      <h2 class="h2"><span class="line"><span>Want to help run the nights?</span></span></h2>
+    </div>
+    <div class="volunteer__side">
+      <p class="reveal">
+        Every event needs hands. Sound, door, photos, social, hosting. If you want to see how a
+        live show actually comes together, and meet the people who make them, put your name down.
+        No experience needed.
+      </p>
+      <a class="btn btn--pink magnetic reveal" href="https://forms.gle/J3LD7gMRJDp9Z1qB9" target="_blank" rel="noopener"><span>Volunteer with us</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 · TWO WAYS IN ============ -->
+<section class="slot slot--floor" id="floor" data-slot="06" data-name="Two ways in" data-time="22:00" data-gel="mindaro">
+  <header class="slot__head">
+    <p class="eyebrow mono reveal">06 · The floor</p>
+    <h2 class="h2"><span class="line"><span>Two ways in</span></span></h2>
+  </header>
+
+  <div class="panels">
+    <article class="panel panel--mindaro reveal">
+      <span class="panel__tag mono">For artists and audiences</span>
+      <h3>Join the community</h3>
+      <p>
+        The community is the strongest thing we have built, and you do not have to perform to be
+        in it. If you just like watching people be good at something, that counts. Members hear
+        about every lineup, every gig call and every collab first.
+      </p>
+      <a class="btn btn--dark magnetic" href="#encore"><span>Join the community</span></a>
+    </article>
+
+    <article class="panel panel--orange reveal">
+      <span class="panel__tag mono">For venues and spaces</span>
+      <h3>Host an open mic</h3>
+      <p>
+        Cafes, restaurants, pubs and creative spaces: we bring 100 to 150 people through your
+        doors over a couple of hours, and they stay to eat and drink. We can co-host the night
+        with you as a live event. All we need is the space and the tech to run it.
+      </p>
+      <a class="btn btn--dark magnetic" href="mailto:raahe.co@gmail.com?subject=Partnership%20Request%20-%20Open%20Mic"><span>Partner with us</span></a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 07 · OUR TEAM ============ -->
+<section class="slot slot--crew" id="crew" data-slot="07" data-name="Our team" data-time="22:20" data-gel="pink">
+  <header class="slot__head">
+    <p class="eyebrow mono reveal">07 · Our team</p>
+    <h2 class="h2"><span class="line"><span>The people running the room</span></span></h2>
+  </header>
+
+  <div class="crew">
+    <article class="member reveal">
+      <div class="member__photo">
+        <img src="images/tanish.jpg" alt="Tanish Raj" loading="lazy" onerror="this.remove()" />
+      </div>
+      <div class="member__meta">
+        <h3>Tanish Raj</h3>
+        <p class="mono">Founder · Client relations</p>
+        <div class="member__links">
+          <a href="https://www.linkedin.com/in/tanish-raj-598617224/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.instagram.com/tanishraj03" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="member reveal">
+      <div class="member__photo">
+        <img src="images/smera.jpg" alt="Smera Shetty" loading="lazy" onerror="this.remove()" />
+      </div>
+      <div class="member__meta">
+        <h3>Smera Shetty</h3>
+        <p class="mono">Founder · Community</p>
+        <div class="member__links">
+          <a href="https://www.linkedin.com/in/smera-shetty-013956229/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.instagram.com/stillsmera" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ ENCORE ============ -->
+<section class="encore" id="encore" data-slot="08" data-name="Encore" data-time="22:45" data-gel="pink">
+  <div class="encore__head">
+    <h2 class="encore__title">
+      <span class="line"><span>The mic</span></span>
+      <span class="line"><span>is <em>open</em>.</span></span>
+    </h2>
+    <p class="encore__lede reveal">
+      Tell us what you do. We will tell you where the next stage is.
+    </p>
+  </div>
+
+  <form class="signup" id="signup" novalidate>
+    <div class="signup__row">
+      <label class="field">
+        <span class="mono">Your name</span>
+        <input type="text" name="name" required placeholder="Aarav Menon" autocomplete="name" />
+      </label>
+      <label class="field">
+        <span class="mono">Email</span>
+        <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
+      </label>
+    </div>
+    <div class="signup__row">
+      <label class="field">
+        <span class="mono">What do you do?</span>
+        <select name="craft">
+          <option>Singer</option>
+          <option>Instrumentalist</option>
+          <option>Band</option>
+          <option>Rapper</option>
+          <option>Stand-up comedian</option>
+          <option>Poet or spoken word</option>
+          <option>Storyteller</option>
+          <option>Dancer</option>
+          <option>Actor</option>
+          <option>Something else</option>
+          <option>I am here to watch</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="mono">I want to</span>
+        <select name="intent">
+          <option>Perform at an open mic</option>
+          <option>Apply to the artists program</option>
+          <option>Join the community</option>
+          <option>Volunteer at an event</option>
+          <option>Host an open mic at my venue</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn btn--pink btn--wide magnetic" type="submit"><span>Send it</span></button>
+    <p class="signup__note mono" id="signupNote" role="status"></p>
+  </form>
+
+  <footer class="footer">
+    <div class="footer__brand">
+      <img class="footer__logo" src="images/logo.png" alt="" />
+      <span class="footer__word">raahe.co</span>
+      <p class="mono">Bengaluru, India</p>
+    </div>
+    <div class="footer__col">
+      <p class="mono">Get in touch</p>
+      <a href="mailto:raahe.co@gmail.com">raahe.co@gmail.com</a>
+    </div>
+    <div class="footer__col">
+      <p class="mono">Elsewhere</p>
+      <a href="https://www.instagram.com/raahe.co" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="footer__col">
+      <p class="mono">Site</p>
+      <a href="#about">About</a>
+      <a href="#openmic">Open mic</a>
+      <a href="#volunteer">Volunteer</a>
+    </div>
+    <p class="footer__legal mono">© <span id="year">2026</span> Raahe.co · Let's change the performing arts game together.</p>
+  </footer>
+</section>
+
+</main>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gelGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="var(--gel)"/>
+      <stop offset="100%" stop-color="var(--gel)" stop-opacity=".25"/>
+    </linearGradient>
+
+    <g id="shape-flower">
+      <g fill="url(#gelGrad)">
+        <ellipse cx="100" cy="45" rx="16" ry="48"/>
+        <ellipse cx="100" cy="155" rx="16" ry="48"/>
+        <ellipse cx="45" cy="100" rx="48" ry="16"/>
+        <ellipse cx="155" cy="100" rx="48" ry="16"/>
+        <ellipse cx="61" cy="61" rx="16" ry="48" transform="rotate(45 61 61)"/>
+        <ellipse cx="139" cy="139" rx="16" ry="48" transform="rotate(45 139 139)"/>
+        <ellipse cx="139" cy="61" rx="48" ry="16" transform="rotate(45 139 61)"/>
+        <ellipse cx="61" cy="139" rx="48" ry="16" transform="rotate(45 61 139)"/>
+      </g>
+    </g>
+
+    <g id="shape-star">
+      <path fill="url(#gelGrad)" d="M100 8l18 44 44-18-18 44 44 18-44 18 18 44-44-18-18 44-18-44-44 18 18-44-44-18 44-18-18-44 44 18z"/>
+    </g>
+
+    <g id="shape-hex">
+      <path fill="url(#gelGrad)" d="M100 12l76 44v88l-76 44-76-44V56z"/>
+      <path fill="none" stroke="var(--gel)" stroke-width="2" stroke-opacity=".5" d="M100 44l48 28v56l-48 28-48-28V72z"/>
+    </g>
+
+    <g id="shape-burst">
+      <g fill="url(#gelGrad)">
+        <path d="M100 4l14 72 72-14-58 46 58 46-72-14-14 72-14-72-72 14 58-46-58-46 72 14z"/>
+      </g>
+    </g>
+  </defs>
+</svg>
+
+<script src="main.js"></script>
+</body>
+</html>
