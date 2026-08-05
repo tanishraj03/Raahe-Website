@@ -808,6 +808,67 @@ a{ color:inherit; }
   /* the pointer-following stage light has no pointer to follow here,
      so it just reads as a stray tint over the top of the screen */
   .spotlight{ display:none; }
+
+  /* Bigger opening headline */
+  .hero__head{ font-size:clamp(38px,11vw,116px); }
+
+  /* Headings sized to run the full width of a phone screen instead of
+     breaking short and leaving the right side empty */
+  .h2{ font-size:clamp(34px,10.4vw,90px); }
+  .slot__head--split .h2{ font-size:clamp(34px,10.4vw,90px); }
+  .statement, .about .statement{ font-size:clamp(26px,7.6vw,41px); }
+  .encore__title{ font-size:clamp(44px,15vw,138px); }
+  .sub{ font-size:clamp(21px,6vw,30px); }
+
+  /* Close up the space between sections */
+  .slot{ padding-top:42px; padding-bottom:42px; }
+  .encore{ padding-top:42px; }
+  .slot--volunteer{ padding-top:30px; padding-bottom:30px; }
+  .slot__head{ margin-bottom:26px; }
+  .about{ margin-bottom:38px; }
+  .scores{ margin-bottom:38px; }
+  .strip{ margin-top:26px; }
+  .strip--tall{ margin-bottom:34px; }
+  .sub{ margin:32px 0 20px; }
+  .tickets{ margin-top:32px; }
+  .cards{ gap:14px; }
+  .encore__top{ margin-bottom:38px; }
+  .footer{ padding-top:32px; }
+  .footer__legal{ margin-top:30px; }
+}
+
+
+/* ---------------------------------------------------------
+   Phone spacing and type scale. Sections were carrying desktop
+   padding, and headings were sitting small against a full width
+   column, which read as a lot of empty space.
+   --------------------------------------------------------- */
+@media (max-width:768px){
+  .slot{ padding:clamp(44px,5.4vh,64px) var(--gut); }
+  .encore{ padding:clamp(44px,5.4vh,64px) var(--gut) 32px; }
+  .slot--volunteer{ padding-top:clamp(34px,4vh,52px); padding-bottom:clamp(34px,4vh,52px); }
+
+  .slot__head{ margin-bottom:26px; }
+  .slot__head--split .slot__lede{ margin:16px 0 0; }
+
+  /* fill the column instead of hugging the left */
+  .h2, .slot__head--split .h2{ font-size:clamp(35px,10.4vw,58px); line-height:.94; }
+  .statement, .about .statement{ font-size:clamp(28px,8.4vw,46px); line-height:1.06; }
+  .encore__title{ font-size:clamp(46px,15vw,84px); }
+  .hero__head{ font-size:clamp(33px,9.2vw,48px); letter-spacing:-.045em; }
+  .sub{ font-size:clamp(21px,6vw,28px); margin:26px 0 18px; }
+  .card__title{ font-size:clamp(25px,7.2vw,36px); }
+  .panel h3{ font-size:clamp(29px,8.4vw,42px); }
+  .volunteer .h2, .tickets h3{ font-size:clamp(28px,8vw,40px); }
+
+  .about{ margin-bottom:34px; }
+  .scores{ margin-bottom:34px; gap:26px; }
+  .strip{ margin-top:26px; }
+  .strip--tall{ margin-bottom:30px; }
+  .cards{ gap:14px; }
+  .tickets{ margin-top:30px; }
+  .footer{ padding-top:32px; }
+  .footer__legal{ margin-top:30px; }
 }
 
 /* ---------------------------------------------------------
