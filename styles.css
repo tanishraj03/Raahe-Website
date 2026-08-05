@@ -804,19 +804,22 @@ a{ color:inherit; }
 
   /* --- Hero --- */
   .hero{
-    justify-content:center; min-height:88svh; text-align:center;
-    padding-bottom:clamp(30px,5vh,52px);
+    justify-content:center; min-height:78svh; text-align:center;
+    /* tighter side margins buy real estate for the headline */
+    padding-left:14px; padding-right:14px;
+    padding-bottom:clamp(26px,4vh,44px);
   }
   .hero__grid{ display:flex; flex-direction:column; align-items:center; width:100%; }
-  .hero .eyebrow{ margin-bottom:16px; font-size:10px; letter-spacing:.09em; }
+  .hero .eyebrow{ margin-bottom:20px; font-size:11px; letter-spacing:.08em; }
   .hero__head{
-    max-width:none; margin-bottom:clamp(24px,4.5vh,36px);
-    font-size:clamp(27px,9.4vw,39px); line-height:1; letter-spacing:-.055em;
+    max-width:none; margin-bottom:clamp(30px,5.4vh,46px);
+    /* 10vw is the largest that still keeps "deserves a stage." on one line */
+    font-size:clamp(30px,10vw,48px); line-height:1; letter-spacing:-.06em;
   }
-  .hero__actions{ width:100%; flex-direction:column; align-items:center; gap:10px; }
+  .hero__actions{ width:100%; flex-direction:column; align-items:center; gap:12px; }
   .hero__actions .btn{
-    width:auto; min-width:min(300px,86%);
-    padding:14px 28px; font-size:15.5px;
+    width:auto; min-width:min(380px,95%);
+    padding:19px 28px; font-size:17.5px;
   }
 
   /* the record sits behind the words as a backdrop */
