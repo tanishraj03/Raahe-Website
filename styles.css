@@ -772,7 +772,31 @@ a{ color:inherit; }
 /* ---------------------------------------------------------
    Phones only: the record becomes a backdrop and the words
    take the middle of the screen. Desktop is untouched.
-   --------------------------------------------------------- *//* ---------------------------------------------------------
+   --------------------------------------------------------- *//* The open mic is the flagship, so on desktop it gets the loudest
+   heading on the page and a wider share of the row. */
+@media (min-width:769px){
+  .slot--openmic .slot__head--split{
+    grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);
+    align-items:end;
+  }
+  .slot--openmic .slot__head--split .h2{
+    font-size:clamp(58px,9.4vw,168px);
+    line-height:.84;
+    letter-spacing:-.045em;
+  }
+}
+
+/* Open mic is the flagship, so it gets the biggest heading on the page. */
+@media (min-width:769px){
+  .slot--openmic .slot__head--split{
+    grid-template-columns:minmax(0,1.32fr) minmax(0,.68fr);
+  }
+  .slot--openmic .slot__head--split .h2{
+    font-size:clamp(54px,8.6vw,150px); line-height:.88; letter-spacing:-.045em;
+  }
+}
+
+/* ---------------------------------------------------------
    Phones. Everything below only applies at 768px and under,
    desktop is untouched.
    --------------------------------------------------------- */
@@ -787,7 +811,7 @@ a{ color:inherit; }
   .hero .eyebrow{ margin-bottom:16px; font-size:10px; letter-spacing:.09em; }
   .hero__head{
     max-width:none; margin-bottom:clamp(24px,4.5vh,36px);
-    font-size:clamp(42px,12.8vw,64px); line-height:.94;
+    font-size:clamp(27px,9.4vw,39px); line-height:1; letter-spacing:-.055em;
   }
   .hero__actions{ width:100%; flex-direction:column; align-items:center; gap:10px; }
   .hero__actions .btn{
@@ -810,13 +834,16 @@ a{ color:inherit; }
   /* --- Headings reflow ---
      They carry hard line breaks that suit a wide screen. On a phone those
      leave short ragged lines, so let the text run on and fill the column. */
-  .hero__head .line, .h2 .line, .statement .line, .encore__title .line{
+  .h2 .line, .statement .line, .encore__title .line{
     display:inline; overflow:visible; padding:0; margin:0;
   }
-  .hero__head .line > span, .h2 .line > span,
-  .statement .line > span, .encore__title .line > span{
+  .h2 .line > span, .statement .line > span, .encore__title .line > span{
     display:inline; transform:none; transition:none;
   }
+  /* The hero keeps its three written lines. It is sized above so that
+     "deserves a stage." fits on one line at every phone width. */
+  .hero__head .line{ overflow:visible; }
+  .hero__head .line > span{ transform:none; transition:none; }
   .hero__head, .h2, .statement, .encore__title{
     opacity:0; transform:translateY(16px);
     transition:opacity .7s ease, transform .8s var(--ease);
