@@ -552,23 +552,30 @@ a{ color:inherit; }
 }
 .facts span{ display:block; margin-top:14px; color:var(--muted); font-size:.88em; line-height:1.4; }
 
+/* The flagship event gets the one solid pink card on the page. */
 .tickets{
   margin-top:clamp(28px,3.4vw,48px);
   display:flex; align-items:center; justify-content:space-between; gap:clamp(24px,4vw,48px);
   flex-wrap:wrap;
   padding:clamp(28px,4vw,48px);
-  border:1px solid color-mix(in srgb, var(--gel) 45%, transparent);
-  border-radius:22px;
+  border:0;
+  border-radius:24px;
   background:
-    radial-gradient(90% 200% at 100% 0%, color-mix(in srgb, var(--gel) 18%, transparent), transparent 70%),
-    var(--ink-2);
+    radial-gradient(120% 190% at 100% 0%, #FF7CB6, transparent 62%),
+    var(--pink);
+  color:var(--ink);
+  box-shadow:0 24px 70px color-mix(in srgb, var(--pink) 26%, transparent);
 }
-.tickets__copy .mono{ color:var(--gel); margin:0 0 12px; }
+.tickets__copy .mono{ color:rgba(14,14,14,.6); margin:0 0 12px; }
 .tickets h3{
   margin:0; font-size:clamp(26px,3.2vw,44px); font-weight:800;
-  letter-spacing:-.035em; line-height:1.02;
+  letter-spacing:-.035em; line-height:1.02; color:var(--ink);
 }
-.tickets__sub{ margin:14px 0 0; color:var(--muted); max-width:56ch; }
+.tickets__where{
+  margin:12px 0 0; font-weight:700; color:var(--ink);
+  font-size:clamp(16px,1.35vw,20px); letter-spacing:-.01em;
+}
+.tickets__sub{ margin:12px 0 0; color:rgba(14,14,14,.72); max-width:56ch; font-weight:500; }
 
 /* ---------------------------------------------------------
    05 · Volunteer
@@ -757,10 +764,13 @@ a{ color:inherit; }
 @media (max-width:620px){
   .scores{ grid-template-columns:1fr; }
   .facts{ grid-template-columns:1fr; }
-  .footer{ grid-template-columns:repeat(2,1fr); gap:30px 20px; }
+  .footer{ grid-template-columns:1.5fr .95fr .9fr; gap:28px 10px; }
   .footer__brand{ grid-column:1 / -1; }
   .footer__logo{ width:46px; margin-bottom:12px; }
   .footer__word{ font-size:clamp(30px,10vw,44px); }
+  .footer__col{ gap:8px; }
+  .footer__col .mono{ font-size:9.5px; letter-spacing:.1em; margin-bottom:2px; }
+  .footer__col a{ font-size:12.5px; overflow-wrap:anywhere; }
   .hero__actions .btn{ width:100%; }
   .program__list li{ grid-template-columns:1fr; gap:8px; }
 }
@@ -804,7 +814,11 @@ a{ color:inherit; }
 
   /* --- Hero --- */
   .hero{
-    justify-content:center; min-height:78svh; text-align:center;
+    justify-content:center; text-align:center;
+    /* the hero owns the whole first screen, nothing peeks in underneath.
+       dvh tracks the browser chrome as it shows and hides; vh is the fallback. */
+    min-height:100vh;
+    min-height:100dvh;
     /* tighter side margins buy real estate for the headline */
     padding-left:14px; padding-right:14px;
     padding-bottom:clamp(26px,4vh,44px);
@@ -816,10 +830,10 @@ a{ color:inherit; }
     /* 10vw is the largest that still keeps "deserves a stage." on one line */
     font-size:clamp(30px,10vw,48px); line-height:1; letter-spacing:-.06em;
   }
-  .hero__actions{ width:100%; flex-direction:column; align-items:center; gap:12px; }
+  .hero__actions{ width:100%; flex-direction:column; align-items:center; gap:11px; }
   .hero__actions .btn{
-    width:auto; min-width:min(380px,95%);
-    padding:19px 28px; font-size:17.5px;
+    width:auto; min-width:min(350px,90%);
+    padding:16px 28px; font-size:16.5px;
   }
 
   /* the record sits behind the words as a backdrop */
