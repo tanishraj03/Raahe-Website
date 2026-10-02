@@ -393,7 +393,41 @@ a{ color:inherit; }
 @keyframes spin{ to{ transform:rotate(360deg) } }
 
 /* ---------------------------------------------------------
-   The turntable
+   Phones and tablets: the record with notes in orbit
+   --------------------------------------------------------- */
+.galaxy{
+  position:absolute; right:var(--gut);
+  top:calc(50% + (var(--pt) - var(--pb)) / 2); transform:translateY(-50%);
+  width:min(40vw,500px,66svh); aspect-ratio:1;
+}
+.galaxy svg{ width:100%; height:100%; overflow:visible; }
+.galaxy g{ transform-box:view-box; transform-origin:200px 200px; }
+
+@keyframes spinBack{ to{ transform:rotate(-360deg) } }
+@keyframes ping{
+  0%{ transform:scale(1); opacity:.55 }
+  100%{ transform:scale(2.5); opacity:0 }
+}
+@keyframes twinkle{
+  0%,100%{ opacity:.15 } 50%{ opacity:.9 }
+}
+
+.orb--a{ animation:spin 60s linear infinite; }
+.orb--b{ animation:spinBack 38s linear infinite; }
+.orb--c{ animation:spin 22s linear infinite; }
+.vinyl{ animation:spin 14s linear infinite; }
+.waves circle{
+  transform-box:view-box; transform-origin:200px 200px;
+  animation:ping 4.8s ease-out infinite; animation-delay:var(--d);
+}
+.stars circle{ animation:twinkle 3.4s ease-in-out infinite; animation-delay:var(--d); }
+
+/* One or the other, never both */
+@media (min-width:901px){ .galaxy{ display:none; } }
+@media (max-width:900px){ .deck{ display:none; } }
+
+/* ---------------------------------------------------------
+   The turntable (desktop)
    Everything inside is sized in cqw, a percentage of the deck's
    own width, so it scales as one object. Seen from slightly in
    front, sitting in a pool of stage light.
@@ -403,7 +437,7 @@ a{ color:inherit; }
   /* clear of the headline on the left and the running-order rail on the right */
   position:absolute; right:calc(var(--gut) + 1.5vw);
   top:calc(50% + (var(--pt) - var(--pb)) / 2); transform:translateY(-50%);
-  width:min(35vw,560px,72svh);
+  width:min(30vw,490px,62svh);
   container-type:inline-size;
   perspective:1700px;
   pointer-events:auto; cursor:pointer;
@@ -981,9 +1015,9 @@ a{ color:inherit; }
   .signup__row{ grid-template-columns:1fr; }
   /* Hero on a phone: art up top, words centred, no dead space above the fold */
   .hero{ justify-content:flex-end; min-height:86svh; padding-bottom:clamp(34px,5vh,56px); }
-  .deck{
-    width:min(62vw,360px); top:7%; right:-10%; bottom:auto;
-    transform:none; opacity:.5; pointer-events:none;
+  .galaxy{
+    width:min(70vw,330px); top:7%; right:-12%; bottom:auto;
+    transform:none; opacity:.42;
   }
   .stage__glow{ width:110vw; height:110vw; right:-34%; top:-10%; opacity:.42; }
   .hero__head{ max-width:none; }
@@ -1079,10 +1113,10 @@ a{ color:inherit; }
     padding:16px 28px; font-size:16.5px;
   }
 
-  /* the turntable sits behind the words as a backdrop */
-  .deck{
-    width:min(118vw,520px); top:50%; left:50%; right:auto; bottom:auto;
-    transform:translate(-50%,-50%); opacity:.2; pointer-events:none;
+  /* the record sits behind the words as a backdrop */
+  .galaxy{
+    width:min(124vw,540px); top:50%; left:50%; right:auto; bottom:auto;
+    transform:translate(-50%,-50%); opacity:.16;
   }
   .stage__glow{
     width:150vw; height:150vw; left:-25vw; right:auto; top:50%; margin-top:-75vw;
