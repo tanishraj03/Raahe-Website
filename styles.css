@@ -351,6 +351,8 @@ a{ color:inherit; }
 .hero{
   --pt: calc(var(--nav-h) + 24px);
   --pb: clamp(32px,5svh,64px);
+  /* headline size, shared with the turntable so it can keep clear of it */
+  --hf: clamp(37px,min(7.4vw,12.5svh),116px);
   position:relative; z-index:2;
   min-height:calc(100vh - var(--band-h));
   min-height:calc(100svh - var(--band-h));
@@ -367,7 +369,7 @@ a{ color:inherit; }
 
 .hero__head{
   /* follows the screen height too, so short laptop screens still fit */
-  font-size:clamp(37px,min(7.4vw,12.5svh),116px);
+  font-size:var(--hf);
   line-height:.88;
   margin:0 0 clamp(28px,5vh,54px);
   max-width:16ch;
@@ -432,12 +434,23 @@ a{ color:inherit; }
    own width, so it scales as one object. Seen from slightly in
    front, sitting in a pool of stage light.
    --------------------------------------------------------- */
-/* centred on the same line as the hero text, right edge on the page gutter */
+/* Centred in the open space between the end of the headline and the
+   running-order rail, with the same gap on each side, and as large as that
+   space allows. Measured in the hero's own coordinates:
+   - the headline's longest line ("deserves a stage.") is 7.25 x its font size
+   - the rail sits half a gutter in from the window edge and is 34px wide
+   - the drawn deck runs about 3.5% wider than its box, from the tilt */
 .deck{
-  /* clear of the headline on the left and the running-order rail on the right */
-  position:absolute; right:calc(var(--gut) + 1.5vw);
+  --hl: max(0px, (100vw - var(--max)) / 2);
+  --text-end: calc(var(--gut) + var(--hf) * 7.25);
+  --rail-start: calc(100vw - var(--hl) - var(--gut) * .5 - 34px);
+  --room: calc(var(--rail-start) - var(--text-end));
+  --gap: clamp(24px, 2.2vw, 64px);
+  --w: min(620px, 66svh, (var(--room) - var(--gap) * 2) / 1.035);
+  position:absolute;
+  left:calc(var(--text-end) + (var(--room) - var(--w) * 1.035) / 2);
   top:calc(50% + (var(--pt) - var(--pb)) / 2); transform:translateY(-50%);
-  width:min(30vw,490px,62svh);
+  width:var(--w);
   container-type:inline-size;
   perspective:1700px;
   pointer-events:auto; cursor:pointer;
@@ -980,6 +993,7 @@ a{ color:inherit; }
    Responsive
    --------------------------------------------------------- */
 @media (max-width:1180px){
+  .deck{ --rail-start: calc(100vw - var(--hl) - var(--gut)); }
   .scores{ grid-template-columns:repeat(2,1fr); }
   .facts{ grid-template-columns:repeat(3,1fr); }
   .rail{ display:none; }
