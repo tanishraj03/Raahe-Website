@@ -60,7 +60,7 @@ Keep every file under about 400 KB. Squoosh.app compresses for free.
 | Button | Goes to |
 |---|---|
 | Host an open mic / Partner with us | email to raahe.co@gmail.com, subject Partnership Request - Open Mic |
-| Get tickets | link.district.in/DSTRKT/0q8uw5ie |
+| Get tickets | beacons.ai/raahe |
 | Apply to the program | forms.gle/EJzCDZ1ePk9BEDeB6 |
 | Volunteer with us | forms.gle/J3LD7gMRJDp9Z1qB9 |
 | Register / Send it | the form at the bottom, which emails raahe.co@gmail.com |
