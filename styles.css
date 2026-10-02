@@ -265,6 +265,11 @@ a{ color:inherit; }
 .btn--dark{ --bg:var(--ink); --fg:var(--paper); }
 .btn--dark:hover{ box-shadow:0 10px 30px rgba(0,0,0,.3); }
 .btn--wide{ width:100%; padding:19px 30px; font-size:18px; }
+/* the one button on the page that sells tickets */
+.btn--xl{
+  padding:clamp(20px,1.7vw,26px) clamp(40px,3.6vw,60px);
+  font-size:clamp(19px,1.5vw,23px); font-weight:700;
+}
 .nav__cta{ padding:13px 26px; font-size:16.5px; }
 
 /* ---------------------------------------------------------
@@ -355,6 +360,10 @@ a{ color:inherit; }
   overflow:hidden;
 }
 .hero__grid{ position:relative; z-index:3; }
+@media (min-width:901px){
+  .hero__grid{ pointer-events:none; }
+  .hero__grid > *{ pointer-events:auto; width:fit-content; }
+}
 
 .hero__head{
   /* follows the screen height too, so short laptop screens still fit */
@@ -376,35 +385,207 @@ a{ color:inherit; }
   animation:breathe 9s ease-in-out infinite;
 }
 @keyframes breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
-
-/* centred on the same line as the hero text, right edge on the page gutter */
-.galaxy{
-  position:absolute; right:var(--gut);
-  top:calc(50% + (var(--pt) - var(--pb)) / 2); transform:translateY(-50%);
-  width:min(40vw,500px,66svh); aspect-ratio:1;
-}
-.galaxy svg{ width:100%; height:100%; overflow:visible; }
-.galaxy g{ transform-box:view-box; transform-origin:200px 200px; }
+/* On a wide screen the turntable brings its own pool of light, and this
+   one ran past the hero's edge into a hard-edged box. Phones keep it as
+   the tint behind the words. */
+@media (min-width:901px){ .stage__glow{ display:none; } }
 
 @keyframes spin{ to{ transform:rotate(360deg) } }
-@keyframes spinBack{ to{ transform:rotate(-360deg) } }
-@keyframes ping{
-  0%{ transform:scale(1); opacity:.55 }
-  100%{ transform:scale(2.5); opacity:0 }
+
+/* ---------------------------------------------------------
+   The turntable
+   Everything inside is sized in cqw, a percentage of the deck's
+   own width, so it scales as one object. Seen from slightly in
+   front, sitting in a pool of stage light.
+   --------------------------------------------------------- */
+/* centred on the same line as the hero text, right edge on the page gutter */
+.deck{
+  /* clear of the headline on the left and the running-order rail on the right */
+  position:absolute; right:calc(var(--gut) + 1.5vw);
+  top:calc(50% + (var(--pt) - var(--pb)) / 2); transform:translateY(-50%);
+  width:min(35vw,560px,72svh);
+  container-type:inline-size;
+  perspective:1700px;
+  pointer-events:auto; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
-@keyframes twinkle{
-  0%,100%{ opacity:.15 } 50%{ opacity:.9 }
+/* the light it sits in, and the shadow it casts */
+.deck__pool{
+  position:absolute; left:50%; top:56%; width:150%; aspect-ratio:1.6;
+  transform:translate(-50%,-50%);
+  background:
+    radial-gradient(closest-side, rgba(0,0,0,.65), transparent 70%) 50% 62% / 78% 42% no-repeat,
+    radial-gradient(closest-side, color-mix(in srgb, var(--pink) 26%, transparent), transparent);
+  pointer-events:none;
+}
+.deck__tilt{
+  position:relative;
+  transform:rotateX(24deg) rotateZ(-3deg);
+  transform-origin:50% 60%;
 }
 
-.orb--a{ animation:spin 60s linear infinite; }
-.orb--b{ animation:spinBack 38s linear infinite; }
-.orb--c{ animation:spin 22s linear infinite; }
-.vinyl{ animation:spin 14s linear infinite; }
-.waves circle{
-  transform-box:view-box; transform-origin:200px 200px;
-  animation:ping 4.8s ease-out infinite; animation-delay:var(--d);
+.deck__body{
+  position:relative; aspect-ratio:100/84; border-radius:2.4cqw;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.014) 0 1px, transparent 1px 3px),
+    radial-gradient(130% 100% at 25% 0%, #2b2b2e, #1a1a1c 55%, #141416);
+  box-shadow:
+    inset 0 .18cqw 0 rgba(255,255,255,.10),
+    inset 0 -.2cqw 0 rgba(0,0,0,.6),
+    0 2.6cqw 0 #0f0f11,
+    0 2.6cqw 0 .08cqw rgba(255,255,255,.04),
+    0 7cqw 9cqw rgba(0,0,0,.6);
 }
-.stars circle{ animation:twinkle 3.4s ease-in-out infinite; animation-delay:var(--d); }
+
+/* Platter: a stationary strobe rim (under stage light the dots look
+   still, which is the point of them) and a spinning record on top. */
+.platter{
+  position:absolute; left:5cqw; top:5cqw; width:70cqw; aspect-ratio:1; border-radius:50%;
+  box-shadow:0 0 0 .7cqw #0c0c0e, 0 0 0 .85cqw rgba(255,255,255,.05);
+}
+.platter__rim{
+  position:absolute; inset:0; border-radius:50%;
+  background:
+    radial-gradient(closest-side, transparent 93%, rgba(0,0,0,.35) 96%, transparent),
+    repeating-conic-gradient(#c4c4c9 0 1.1deg, #5a5a5f 1.1deg 2.2deg);
+}
+.deck__spin{ position:absolute; inset:2cqw; border-radius:50%; will-change:transform; }
+.record{
+  position:absolute; inset:0; border-radius:50%;
+  background:
+    /* the smooth lead-in at the edge */
+    radial-gradient(closest-side, transparent 95.6%, #19191b 96.2%, #0f0f10 99%, #222225 100%),
+    /* gaps between tracks */
+    radial-gradient(closest-side,
+      transparent 44.5%, rgba(255,255,255,.05) 44.8% 45.6%, transparent 45.9%,
+      transparent 59.5%, rgba(255,255,255,.05) 59.8% 60.6%, transparent 60.9%,
+      transparent 75.5%, rgba(255,255,255,.05) 75.8% 76.6%, transparent 76.9%),
+    /* the grooves */
+    repeating-radial-gradient(closest-side, #0c0c0d 0 .7%, #121214 1.1%, #0c0c0d 1.5%);
+  box-shadow:0 .5cqw 1.2cqw rgba(0,0,0,.55);
+}
+.label{
+  position:absolute; left:50%; top:50%; width:33%;
+  transform:translate(-50%,-50%);
+  overflow:visible;
+}
+.label__ring{ font:500 6.4px var(--mono); fill:#0E0E0E; fill-opacity:.72; letter-spacing:.4px; }
+.label__word{ font:800 15px var(--display); fill:#0E0E0E; letter-spacing:-.6px; }
+.label__side{ font:500 5px var(--mono); fill:#0E0E0E; fill-opacity:.7; letter-spacing:1.6px; }
+
+/* Light catching the grooves stays put while the record turns under it.
+   One wedge is the room, the other is the pink stage light. */
+.record__sheen{
+  position:absolute; inset:2cqw; border-radius:50%; pointer-events:none;
+  background:conic-gradient(from -40deg,
+    transparent 0deg, rgba(255,255,255,.14) 26deg, transparent 52deg,
+    transparent 180deg,
+    color-mix(in srgb, var(--pink) 30%, transparent) 206deg, transparent 232deg);
+  -webkit-mask:radial-gradient(closest-side, transparent 33.6%, #000 34.5%, #000 95%, transparent 97%);
+          mask:radial-gradient(closest-side, transparent 33.6%, #000 34.5%, #000 95%, transparent 97%);
+  mix-blend-mode:screen;
+}
+.spindle{
+  position:absolute; left:50%; top:50%; width:1.7cqw; aspect-ratio:1; border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 35% 30%, #fff, #b9b9be 35%, #55555a 75%);
+  box-shadow:0 .25cqw .4cqw rgba(0,0,0,.6);
+}
+
+/* Tonearm. Pivot at (86, 18) on the plinth; the arm hangs straight
+   down at rest and swings 30 degrees onto the outer groove to play. */
+.arm__base{
+  position:absolute; left:86cqw; top:18cqw; width:12.5cqw; aspect-ratio:1; border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    #e4e4e8 0 13%, #6e6e74 15% 21%, #2c2c30 23% 58%, #3a3a3f 60%, #1b1b1d 63% 100%);
+  box-shadow:inset 0 .2cqw 0 rgba(255,255,255,.1), 0 .6cqw 1.2cqw rgba(0,0,0,.6);
+}
+.arm__rest{
+  position:absolute; left:86cqw; top:51cqw; width:3.6cqw; height:2.6cqw; border-radius:.6cqw;
+  transform:translate(-50%,-50%);
+  background:linear-gradient(#2e2e32, #19191b);
+  box-shadow:inset 0 .15cqw 0 rgba(255,255,255,.12), 0 .4cqw .8cqw rgba(0,0,0,.6);
+}
+.deck__arm{
+  position:absolute; left:86cqw; top:18cqw; width:0; height:0;
+  transform:rotate(0deg);
+  transition:transform 1.2s cubic-bezier(.45,0,.25,1);
+}
+.deck.is-playing .deck__arm{ transform:rotate(30deg); }
+.arm__wobble{ position:absolute; inset:0; }
+.arm__lift{
+  position:absolute; inset:0;
+  filter:drop-shadow(.6cqw 1cqw .5cqw rgba(0,0,0,.6));
+  transition:filter .38s ease, transform .38s ease;
+}
+/* Cueing: the arm rises off the record, so it sits higher and its
+   shadow falls further away and softer. */
+.deck.is-cueing .arm__lift{
+  transform:translate(-.5cqw,-.9cqw) scale(1.025);
+  filter:drop-shadow(1.8cqw 2.8cqw 1.4cqw rgba(0,0,0,.45));
+}
+.arm__tube{
+  position:absolute; left:-.55cqw; top:-8cqw; width:1.1cqw; height:46cqw; border-radius:.6cqw;
+  background:linear-gradient(90deg, #47474c, #cfcfd4 38%, #fafafb 50%, #9b9ba1 66%, #3c3c41);
+}
+.arm__weight{
+  position:absolute; left:-2.5cqw; top:-13.5cqw; width:5cqw; height:6.4cqw; border-radius:.9cqw;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 .2cqw, transparent .2cqw .7cqw),
+    linear-gradient(90deg, #2d2d31, #8d8d93 35%, #c9c9ce 50%, #6a6a70 68%, #222226);
+}
+.arm__shell{
+  position:absolute; left:-2.1cqw; top:36.5cqw; width:4.2cqw; height:7.6cqw;
+  border-radius:.7cqw .7cqw 1.1cqw 1.1cqw;
+  background:linear-gradient(90deg, #121214, #2a2a2e 45%, #161618);
+  box-shadow:inset 0 0 0 .2cqw rgba(255,255,255,.14);
+  transform:rotate(22deg); transform-origin:50% 0;
+}
+/* the cartridge, in the one bit of brand colour on the arm */
+.arm__shell i{
+  position:absolute; left:.9cqw; right:.9cqw; bottom:.9cqw; height:2.6cqw; border-radius:.35cqw;
+  background:linear-gradient(90deg, #c23476, var(--pink) 45%, #c23476);
+}
+.arm__shell::after{ /* finger lift */
+  content:""; position:absolute; right:-1.8cqw; top:4.6cqw; width:2cqw; height:.6cqw; border-radius:.3cqw;
+  background:linear-gradient(#d6d6da, #77777c);
+}
+
+/* Controls along the front edge */
+.deck__start{
+  position:absolute; left:4cqw; top:77.4cqw; width:12cqw; height:4.4cqw; border-radius:.7cqw;
+  display:grid; place-items:center;
+  background:linear-gradient(#2c2c30, #18181a);
+  box-shadow:inset 0 .15cqw 0 rgba(255,255,255,.12), 0 .3cqw .6cqw rgba(0,0,0,.6);
+}
+.deck__start span, .deck__speed span, .deck__brand{
+  font:500 1.25cqw/1 var(--mono); letter-spacing:.12em; color:rgba(244,245,245,.55);
+}
+.deck__speed{
+  position:absolute; left:18.5cqw; top:77.4cqw; height:4.4cqw;
+  display:flex; align-items:center; gap:1.4cqw;
+}
+.deck__speed span{
+  display:grid; place-items:center; width:5.4cqw; height:3cqw; border-radius:.5cqw;
+  background:linear-gradient(#26262a, #161618);
+  box-shadow:inset 0 .12cqw 0 rgba(255,255,255,.1);
+}
+/* the pilot light: on while the record plays */
+.deck__speed i{
+  width:.9cqw; aspect-ratio:1; border-radius:50%; background:#3a2430;
+  transition:background .4s ease, box-shadow .4s ease;
+}
+.deck.is-playing .deck__speed i{
+  background:var(--pink);
+  box-shadow:0 0 .8cqw var(--pink), 0 0 2.4cqw color-mix(in srgb, var(--pink) 60%, transparent);
+}
+.deck.is-playing .deck__speed .is-on{ color:var(--pink); }
+.deck__brand{
+  position:absolute; right:4cqw; top:79cqw;
+  font:700 1.9cqw/1 var(--display); letter-spacing:-.02em; color:rgba(244,245,245,.32);
+}
+
 .card__art svg{ animation:spin 40s linear infinite; }
 
 @keyframes cue{ 0%,100%{transform:scaleY(.4); opacity:.4} 50%{transform:scaleY(1); opacity:1} }
@@ -800,9 +981,9 @@ a{ color:inherit; }
   .signup__row{ grid-template-columns:1fr; }
   /* Hero on a phone: art up top, words centred, no dead space above the fold */
   .hero{ justify-content:flex-end; min-height:86svh; padding-bottom:clamp(34px,5vh,56px); }
-  .galaxy{
-    width:min(70vw,330px); top:7%; right:-12%; bottom:auto;
-    transform:none; opacity:.42;
+  .deck{
+    width:min(62vw,360px); top:7%; right:-10%; bottom:auto;
+    transform:none; opacity:.5; pointer-events:none;
   }
   .stage__glow{ width:110vw; height:110vw; right:-34%; top:-10%; opacity:.42; }
   .hero__head{ max-width:none; }
@@ -898,10 +1079,10 @@ a{ color:inherit; }
     padding:16px 28px; font-size:16.5px;
   }
 
-  /* the record sits behind the words as a backdrop */
-  .galaxy{
-    width:min(124vw,540px); top:50%; left:50%; right:auto; bottom:auto;
-    transform:translate(-50%,-50%); opacity:.16;
+  /* the turntable sits behind the words as a backdrop */
+  .deck{
+    width:min(118vw,520px); top:50%; left:50%; right:auto; bottom:auto;
+    transform:translate(-50%,-50%); opacity:.2; pointer-events:none;
   }
   .stage__glow{
     width:150vw; height:150vw; left:-25vw; right:auto; top:50%; margin-top:-75vw;

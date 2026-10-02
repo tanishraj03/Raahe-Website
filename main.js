@@ -44,7 +44,97 @@ const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 function startHero () {
   $$('.hero .line').forEach(l => l.closest('h1')?.classList.add('is-in'));
   $$('.hero .reveal').forEach((r, i) => setTimeout(() => r.classList.add('is-in'), 180 + i * 90));
+  // The turntable may not be wired up yet when this runs straight away
+  // (reduced motion skips the loader), so leave a flag as well as the event.
+  document.documentElement.dataset.heroStarted = '1';
+  document.dispatchEvent(new Event('hero:start'));
 }
+
+/* ---------------------------------------------------------
+   1b. The turntable
+   Press start: the platter spins up, then the arm lifts, swings
+   over and drops the needle. Click again: the arm lifts back to
+   its rest and the platter winds down. Speeds are real: 33⅓ rpm,
+   up to speed in about half a second, a slower coast to a stop.
+   --------------------------------------------------------- */
+(function turntable () {
+  const deck = $('#deck');
+  if (!deck) return;
+  const spin   = $('.deck__spin', deck);
+  const wobble = $('.arm__wobble', deck);
+
+  const PLAYING_DEG_PER_SEC = 33.333 * 360 / 60;
+  const LIFT = 380;   // matches the .arm__lift transition
+  const SWING = 1200; // matches the .deck__arm transition
+
+  if (REDUCED) {
+    // Needle on the record, nothing moving.
+    deck.classList.add('is-playing');
+    deck.title = '';
+    return;
+  }
+
+  let angle = 0, speed = 0, target = 0, playing = false;
+  let raf = 0, last = 0, onScreen = true, timers = [];
+
+  function frame (now) {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    const rate = target > speed ? 5 : 1.6;
+    speed += (target - speed) * (1 - Math.exp(-rate * dt));
+    angle = (angle + speed * dt) % 360;
+    spin.style.transform = `rotate(${angle}deg)`;
+
+    // A record is never perfectly flat; the arm rides the warp once a turn.
+    const riding = playing && !deck.classList.contains('is-cueing');
+    wobble.style.transform = riding ? `rotate(${Math.sin(angle * Math.PI / 180) * 0.3}deg)` : '';
+
+    if (target === 0 && speed < 0.4) { speed = 0; raf = 0; return; }
+    raf = onScreen && !document.hidden ? requestAnimationFrame(frame) : 0;
+  }
+
+  function run () {
+    if (raf || !onScreen || document.hidden) return;
+    if (target === 0 && speed === 0) return;
+    last = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
+
+  function later (ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+  function play (on) {
+    timers.forEach(clearTimeout);
+    timers = [];
+    playing = on;
+    deck.title = on ? 'Stop the record' : 'Play the record';
+
+    if (on) {
+      target = PLAYING_DEG_PER_SEC;
+      run();
+      // up to speed first, then cue the arm over
+      later(450, () => deck.classList.add('is-cueing'));
+      later(450 + LIFT, () => deck.classList.add('is-playing'));
+      later(450 + LIFT + SWING, () => deck.classList.remove('is-cueing'));
+    } else {
+      deck.classList.add('is-cueing');
+      later(LIFT, () => { deck.classList.remove('is-playing'); target = 0; run(); });
+      later(LIFT + SWING, () => deck.classList.remove('is-cueing'));
+    }
+  }
+
+  deck.addEventListener('click', () => play(!playing));
+
+  // No point turning a record nobody can see.
+  new IntersectionObserver(([entry]) => {
+    onScreen = entry.isIntersecting;
+    run();
+  }).observe(deck);
+  document.addEventListener('visibilitychange', run);
+
+  const start = () => later(700, () => play(true));
+  if (document.documentElement.dataset.heroStarted) start();
+  else document.addEventListener('hero:start', start, { once: true });
+})();
 
 /* ---------------------------------------------------------
    2. Scroll reveals (headings reveal line by line)
