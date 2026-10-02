@@ -467,7 +467,7 @@ a{ color:inherit; }
 }
 .deck__tilt{
   position:relative;
-  transform:rotateX(24deg) rotateZ(-3deg);
+  transform:rotateX(24deg);
   transform-origin:50% 60%;
 }
 
