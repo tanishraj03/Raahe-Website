@@ -27,7 +27,12 @@
   /* Layout */
   --gut: clamp(20px, 5vw, 84px);
   --max: 1680px;
-  --nav-h: 90px;
+  /* the nav is a floating glass pill; --nav-h is the space it takes up */
+  --nav-top: 16px;
+  --nav-pill: 64px;
+  --nav-h: calc(var(--nav-top) + var(--nav-pill) + 8px);
+  /* height of the disciplines bar under the hero */
+  --band-h: clamp(64px, 9svh, 92px);
 
   /* Type */
   --display: "League Spartan", system-ui, sans-serif;
@@ -137,30 +142,53 @@ a{ color:inherit; }
 /* ---------------------------------------------------------
    Nav
    --------------------------------------------------------- */
+/* Liquid glass pill. It sits 18px outside the page gutter so the logo
+   inside it lines up with the hero text below. */
 .nav{
-  position:fixed; top:0; left:0; right:0; z-index:80;
-  height:var(--nav-h);
+  --inset: max(12px, calc(var(--gut) - 18px));
+  position:fixed; top:var(--nav-top); left:var(--inset); right:var(--inset); z-index:80;
+  max-width:calc(var(--max) - 2 * var(--gut) + 36px); margin:0 auto;
+  height:var(--nav-pill);
   display:flex; align-items:center; gap:24px;
-  padding:0 var(--gut);
-  transition:transform .5s var(--ease), background .4s ease, border-color .4s ease;
-  border-bottom:1px solid transparent;
+  padding:0 8px 0 18px;
+  border-radius:100px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.04)),
+    rgba(14,14,14,.18);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(255,255,255,.04),
+    0 10px 40px rgba(0,0,0,.35);
+  backdrop-filter:blur(22px) saturate(170%);
+  -webkit-backdrop-filter:blur(22px) saturate(170%);
+  transition:transform .5s var(--ease), background .4s ease;
 }
 .nav.is-stuck{
-  background:rgba(14,14,14,.72);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border-bottom-color:var(--line);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04)),
+    rgba(14,14,14,.5);
 }
-.nav.is-hidden{ transform:translateY(-102%); }
+.nav.is-hidden{ transform:translateY(calc(-100% - var(--nav-top) - 4px)); }
 
 .nav__brand{
-  display:flex; align-items:center; gap:13px;
+  display:flex; align-items:center; gap:11px;
   text-decoration:none; margin-right:auto;
 }
-.nav__mark{ width:48px; height:auto; }
+.nav__mark{ width:40px; height:auto; }
 .nav__word{
-  font-weight:700; font-size:26px; letter-spacing:-.03em;
+  font-weight:700; font-size:23px; letter-spacing:-.03em;
 }
+
+.nav__ig{
+  display:grid; place-items:center; flex:none;
+  width:42px; height:42px; border-radius:50%;
+  color:var(--paper); border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.05);
+  transition:background .3s ease, border-color .3s ease, color .3s ease;
+}
+.nav__ig svg{ width:19px; height:19px; }
+.nav__ig:hover{ background:var(--pink); border-color:var(--pink); color:#fff; }
 
 .nav__links{ display:flex; gap:28px; }
 .nav__links a{
@@ -237,7 +265,7 @@ a{ color:inherit; }
 .btn--dark{ --bg:var(--ink); --fg:var(--paper); }
 .btn--dark:hover{ box-shadow:0 10px 30px rgba(0,0,0,.3); }
 .btn--wide{ width:100%; padding:19px 30px; font-size:18px; }
-.nav__cta{ padding:14px 28px; font-size:17px; }
+.nav__cta{ padding:13px 26px; font-size:16.5px; }
 
 /* ---------------------------------------------------------
    Running order rail
@@ -313,18 +341,24 @@ a{ color:inherit; }
 /* ---------------------------------------------------------
    00 · Hero
    --------------------------------------------------------- */
+/* The hero and the disciplines bar under it fill exactly one screen,
+   so the bar is visible the moment the page opens. */
 .hero{
+  --pt: calc(var(--nav-h) + 24px);
+  --pb: clamp(32px,5svh,64px);
   position:relative; z-index:2;
-  min-height:100svh;
-  display:flex; flex-direction:column; justify-content:flex-end;
-  padding:calc(var(--nav-h) + 40px) var(--gut) clamp(48px,7vh,90px);
+  min-height:calc(100vh - var(--band-h));
+  min-height:calc(100svh - var(--band-h));
+  display:flex; flex-direction:column; justify-content:center;
+  padding:var(--pt) var(--gut) var(--pb);
   max-width:var(--max); margin:0 auto;
   overflow:hidden;
 }
 .hero__grid{ position:relative; z-index:3; }
 
 .hero__head{
-  font-size:clamp(37px,7.4vw,116px);
+  /* follows the screen height too, so short laptop screens still fit */
+  font-size:clamp(37px,min(7.4vw,12.5svh),116px);
   line-height:.88;
   margin:0 0 clamp(28px,5vh,54px);
   max-width:16ch;
@@ -343,9 +377,11 @@ a{ color:inherit; }
 }
 @keyframes breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
 
+/* centred on the same line as the hero text, right edge on the page gutter */
 .galaxy{
-  position:absolute; right:-1%; top:57%; transform:translateY(-50%);
-  width:min(42vw,500px); aspect-ratio:1;
+  position:absolute; right:var(--gut);
+  top:calc(50% + (var(--pt) - var(--pb)) / 2); transform:translateY(-50%);
+  width:min(40vw,500px,66svh); aspect-ratio:1;
 }
 .galaxy svg{ width:100%; height:100%; overflow:visible; }
 .galaxy g{ transform-box:view-box; transform-origin:200px 200px; }
@@ -391,6 +427,13 @@ a{ color:inherit; }
   white-space:nowrap; text-transform:uppercase;
 }
 .ticker__track i{ color:var(--gel); font-style:normal; font-size:clamp(14px,1.6vw,24px); }
+
+/* the disciplines bar: fixed height so hero + bar is exactly one screen */
+.hero + .ticker{
+  height:var(--band-h); padding:0;
+  display:flex; align-items:center;
+}
+.hero + .ticker .ticker__track span{ font-size:clamp(22px,min(3vw,5svh),44px); line-height:1; }
 
 .ticker--sm{ border:0; padding:0; }
 .ticker--sm .ticker__track{ gap:26px; }
@@ -727,10 +770,18 @@ a{ color:inherit; }
   .rail{ display:none; }
 }
 
+@media (max-width:1100px){
+  .nav{ gap:18px; }
+  .nav__links{ gap:20px; }
+  .nav__links a{ font-size:16px; }
+}
+
 @media (max-width:900px){
-  :root{ --nav-h:72px; }
-  .nav__mark{ width:40px; }
-  .nav__word{ font-size:22px; }
+  :root{ --nav-top:10px; --nav-pill:58px; }
+  .nav{ gap:10px; padding:0 6px 0 16px; }
+  .nav__mark{ width:36px; }
+  .nav__word{ font-size:21px; }
+  .nav__ig{ width:40px; height:40px; }
   .nav__links{ display:none; }
   .nav__cta{ display:none; }
   .nav__burger{ display:grid; }
@@ -815,6 +866,7 @@ a{ color:inherit; }
 
   /* --- Hero --- */
   .hero{
+    --pt: calc(var(--nav-h) + 36px);
     justify-content:center; text-align:center;
     /* the hero and the discipline bar together make exactly one screen,
        so the bar is the last thing visible before you scroll.
