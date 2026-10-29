@@ -1,5 +1,5 @@
 /* =========================================================
-   Raahe.co - interaction layer
+   Raahe.live - interaction layer
    Everything degrades gracefully: if JS fails, the page is
    still readable, and prefers-reduced-motion turns the
    movement off without removing content.

@@ -1,4 +1,4 @@
-# Raahe.co - website
+# Raahe.live - website
 
 A static site. No build step, no framework, no `npm install`. Three files do the work:
 
@@ -65,7 +65,7 @@ Keep every file under about 400 KB. Squoosh.app compresses for free.
 | Volunteer with us | forms.gle/J3LD7gMRJDp9Z1qB9 |
 | Register / Send it | the form at the bottom, which emails raahe.co@gmail.com |
 
-The footer Instagram link points at `instagram.com/raahe.co`. If that is not your handle,
+The footer Instagram link points at `instagram.com/raahe.live`. If that is not your handle,
 search for it in `index.html` and change it. There is no company LinkedIn on the page yet,
 so add one next to the Instagram link in the footer if you want it.
 
@@ -96,10 +96,10 @@ Your code is now on GitHub. Refresh github.com and you'll see it.
 After about 20 seconds you get a live URL like `raahe-website.vercel.app`. It's public and
 shareable immediately.
 
-## 6. Point raahe.co at it
+## 6. Point raahe.live at it
 
 1. In your Vercel project: **Settings → Domains**.
-2. Type `raahe.co` and click **Add**.
+2. Type `raahe.live` and click **Add**.
 3. Vercel shows you DNS records (an `A` record, and a `CNAME` for `www`).
 4. Log in wherever you bought the domain (GoDaddy, Namecheap, Hostinger…), find
    **DNS settings** or **Manage DNS**, and add exactly the records Vercel showed you.
