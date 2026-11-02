@@ -139,6 +139,39 @@ Commit, sync, done. Free tier covers 50 submissions a month.
 
 ---
 
+## The dashboard (raahe.live/admin)
+
+Open mic dates, the two photo strips, the counting numbers, the partner and discipline bands,
+the team and the main button links can all be changed from **raahe.live/admin** without
+opening VS Code. Edit, press **Preview** to see the site with your changes, then **Publish**.
+Publishing makes a commit on GitHub, and Vercel redeploys the site about a minute later.
+
+- **Signing in.** Username `raahe.live` and the password you chose. The check happens on the
+  server (`api/`), so the password is never in the page or this repo. Only a scrambled version
+  of it (a scrypt hash) is kept, in Vercel. You stay signed in on that browser for 7 days.
+  Five wrong tries locks sign-in from that address for 15 minutes.
+- **Setup, once.** In Vercel: **Project → Settings → Environment Variables**, add
+  `GITHUB_TOKEN` (a fine-grained GitHub token for `Raahe-Website` only, with **Contents** set
+  to **Read and write**) and `ADMIN_PASSWORD_HASH`, then redeploy.
+- **Changing the password.** Run `node scripts/admin-password.js`, type the new password, and
+  paste what it prints into `ADMIN_PASSWORD_HASH` in Vercel, then redeploy. Everyone gets
+  signed out. Making a new GitHub token and swapping `GITHUB_TOKEN` also signs everyone out.
+- **Open mic dates.** Add as many upcoming dates as you like. The ticket card shows the soonest
+  one that hasn't happened yet and lists the next few under it. Once every date has passed,
+  the card says a new date is coming (you can change that text too).
+- **Photos** are shrunk to web size in the browser before they upload, so phone photos are fine.
+  Removing a photo takes it off the site but leaves the file in `images/`.
+- **The dashboard only works on the live site** (or `vercel dev`), because sign-in needs the
+  server part. Live Server in VS Code shows the page but can't sign in.
+- **Under the hood** it all lives in `content.js`. The site reads it when it loads, so for these
+  things `content.js` wins over `index.html`. Editing the same text in `index.html` won't show up.
+  You can still edit `content.js` by hand, just keep it valid JSON.
+- If you edit `content.js` in VS Code, push before using the dashboard (and reload the dashboard
+  after pushing), otherwise one change can overwrite the other. The dashboard warns you if
+  it spots this.
+
+---
+
 ## Where to change things
 
 **Colours** - top of `styles.css`, in the `:root` block. They're the exact hex values from the
@@ -147,8 +180,8 @@ brand guide. Change one there and it updates everywhere on the site.
 **Copy** - all of it is plain text inside `index.html`. Search for the sentence you want to
 change and type over it.
 
-**The numbers that count up** - in `index.html`, look for `data-count="200"`. Change the number
-there and the label next to it. `data-prefix` and `data-suffix` control the `₹` and `+`.
+**The numbers that count up** - use the dashboard, or edit `stats` and `openMicStats` in
+`content.js`.
 
 **The logo** - `images/logo.png` is your logo with the black parts turned white so it reads on
 the dark background. `favicon.png` and `apple-touch-icon.png` are the same mark on a dark

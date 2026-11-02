@@ -847,6 +847,7 @@ a{ color:inherit; }
   font-size:clamp(16px,1.35vw,20px); letter-spacing:-.01em;
 }
 .tickets__sub{ margin:12px 0 0; color:rgba(14,14,14,.72); max-width:56ch; font-weight:500; }
+.tickets__copy .tickets__more{ margin:16px 0 0; color:rgba(14,14,14,.66); }
 
 /* ---------------------------------------------------------
    05 · Volunteer
@@ -1201,4 +1202,12 @@ a{ color:inherit; }
   .line > span{ transform:none; }
   .spotlight, .grain{ display:none; }
   .card{ position:relative; top:auto; }
+}
+
+/* Shown when the dashboard's Preview button opens the site with a draft. */
+.preview-tag{
+  position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:1000;
+  padding:10px 18px; border-radius:999px; pointer-events:none;
+  background:var(--mindaro); color:var(--ink);
+  box-shadow:0 12px 34px rgba(0,0,0,.45);
 }

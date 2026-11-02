@@ -10,6 +10,147 @@ const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
 /* ---------------------------------------------------------
+   0. Content
+   Dates, photos, numbers, partners, team and links live in
+   content.js, which the dashboard at /admin writes. This runs
+   before everything else so the counters and marquees below
+   pick up the new lists. If content.js is missing, the copy
+   already in the HTML stays.
+   --------------------------------------------------------- */
+(function content () {
+  let c = window.RAAHE_CONTENT;
+  let drafts = {};
+
+  // The dashboard's Preview button hands over an unpublished draft.
+  if (new URLSearchParams(location.search).has('preview')) {
+    try {
+      const draft = JSON.parse(localStorage.getItem('raahe-preview') || 'null');
+      if (draft) {
+        c = draft.content;
+        drafts = draft.images || {};
+        const tag = document.createElement('div');
+        tag.className = 'preview-tag mono';
+        tag.textContent = 'Preview · not live yet';
+        document.body.appendChild(tag);
+      }
+    } catch (e) {}
+  }
+  if (!c) return;
+
+  const el = (tag, attrs = {}, ...kids) => {
+    const n = document.createElement(tag);
+    Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v));
+    n.append(...kids);
+    return n;
+  };
+
+  const image = (path, alt = '') => {
+    const img = el('img', { src: drafts[path] || path, alt, loading: 'lazy' });
+    img.onerror = () => img.remove();
+    return img;
+  };
+
+  // A marquee loops by sliding one half of its track, so each half has to be
+  // wider than the screen. Short lists repeat until they are long enough.
+  const loop = (track, items, make) => {
+    if (!track || !items || !items.length) return;
+    const half = [];
+    while (half.length < 8) half.push(...items);
+    track.replaceChildren(...[...half, ...half].flatMap(make));
+  };
+
+  loop($('#disciplines'), c.disciplines, t => [el('span', {}, t), el('i', {}, '✳')]);
+  loop($('#partners'), c.partners, t => [el('span', {}, t), el('i', {}, '·')]);
+  loop($('#openmicPhotos'), c.photos && c.photos.openMic, p => el('figure', { class: 'shot' }, image(p)));
+  loop($('#artistPhotos'), c.photos && c.photos.artists, p => el('figure', { class: 'shot' }, image(p)));
+
+  // Plain numbers count up; anything else (like "#1") is shown as written.
+  const number = (node, s) => {
+    const value = String(s.value == null ? '' : s.value).trim();
+    const prefix = s.prefix || '';
+    const suffix = s.suffix || '';
+    const counts = /^\d+(\.\d+)?$/.test(value);
+    node.classList.toggle('fact__word', !counts);
+    if (counts) {
+      node.dataset.count = value;
+      node.dataset.decimals = (value.split('.')[1] || '').length;
+      node.dataset.prefix = prefix;
+      node.dataset.suffix = suffix;
+      node.textContent = prefix + '0' + suffix;
+    } else {
+      delete node.dataset.count;
+      node.textContent = prefix + value + suffix;
+    }
+  };
+  $$('#scores .score').forEach((row, i) => {
+    const s = c.stats && c.stats[i];
+    if (!s) return;
+    number($('.score__num', row), s);
+    $('p', row).textContent = s.label;
+  });
+  $$('#facts li').forEach((row, i) => {
+    const s = c.openMicStats && c.openMicStats[i];
+    if (!s) return;
+    number($('b', row), s);
+    $('span', row).textContent = s.label;
+  });
+
+  // Only ever link out to https pages, whatever ends up in content.js.
+  const safe = (u) => (typeof u === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(u) ? u : '');
+  const links = c.links || {};
+  $$('[data-link]').forEach(a => { const u = safe(links[a.dataset.link]); if (u) a.href = u; });
+
+  // The ticket card shows the soonest date that hasn't happened yet and lists
+  // the next few under it. Once the last one passes it says a date is coming.
+  const mic = c.openMic;
+  const box = $('#nextMic');
+  if (mic && box) {
+    const d = new Date();
+    const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const upcoming = (mic.events || [])
+      .filter(e => e.date && e.date >= today)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    const day = (date, opts) => new Date(date + 'T00:00').toLocaleDateString('en-GB', opts);
+    const set = (sel, text) => { const n = $(sel, box); n.textContent = text || ''; n.hidden = !text; };
+    const btn = $('.btn', box);
+    const next = upcoming[0];
+
+    if (next) {
+      set('h3', day(next.date, { weekday: 'long', day: 'numeric', month: 'long' }) + (next.time ? ', ' + next.time : ''));
+      set('.tickets__where', next.venue);
+      set('.tickets__sub', mic.note);
+      set('.tickets__more', upcoming.length > 1
+        ? 'Also coming up: ' + upcoming.slice(1, 4).map(e => day(e.date, { weekday: 'short', day: 'numeric', month: 'short' })).join(' · ')
+        : '');
+      $('span', btn).textContent = mic.button || 'Grab your tickets';
+      btn.href = safe(next.tickets) || safe(links.tickets) || btn.href;
+    } else {
+      set('h3', mic.noneTitle);
+      set('.tickets__where', '');
+      set('.tickets__sub', mic.noneNote);
+      set('.tickets__more', '');
+      $('span', btn).textContent = mic.noneButton || 'Follow on Instagram';
+      btn.href = safe(mic.noneLink) || safe(links.instagram) || btn.href;
+    }
+  }
+
+  const crew = $('#crew');
+  if (crew && c.team && c.team.length) {
+    crew.replaceChildren(...c.team.map(m => {
+      const out = el('div', { class: 'member__links' });
+      if (safe(m.linkedin))  out.append(el('a', { href: safe(m.linkedin),  target: '_blank', rel: 'noopener' }, 'LinkedIn'));
+      if (safe(m.instagram)) out.append(el('a', { href: safe(m.instagram), target: '_blank', rel: 'noopener' }, 'Instagram'));
+      return el('article', { class: 'member reveal' },
+        el('div', { class: 'member__photo' }, ...(m.photo ? [image(m.photo, m.name)] : [])),
+        el('div', { class: 'member__meta' },
+          el('h3', {}, m.name || ''),
+          el('p', { class: 'mono' }, m.role || ''),
+          out));
+    }));
+  }
+})();
+
+/* ---------------------------------------------------------
    1. Load sequence
    --------------------------------------------------------- */
 (function loader () {

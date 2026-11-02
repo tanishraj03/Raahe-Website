@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Raahe dashboard</title>
+<link rel="icon" href="../favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=League+Spartan:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- The Raahe dashboard.
+     Talks only to /api on this site. The password check and the GitHub token
+     live on the server (see api/_lib.js), so nothing secret is ever sent to
+     the browser. Publishing makes one commit and Vercel redeploys the site. -->
+
+<style>
+:root{
+  --pink:#F04E98; --paper:#F4F5F5; --mindaro:#D4EB8E; --orange:#FF6A13;
+  --ink:#0E0E0E; --ink-2:#161616; --ink-3:#1E1E1E;
+  --line:rgba(244,245,245,.13); --muted:rgba(244,245,245,.62);
+  --display:"League Spartan", system-ui, sans-serif;
+  --mono:"DM Mono", ui-monospace, Menlo, monospace;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0; background:var(--ink); color:var(--paper);
+  font-family:var(--display); font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+[hidden]{ display:none !important; }
+a{ color:var(--pink); }
+h1,h2,h3{ margin:0; letter-spacing:-.03em; line-height:1.05; }
+.mono{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+
+/* buttons */
+.btn{
+  appearance:none; border:0; cursor:pointer; font:inherit; font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 20px; border-radius:999px; text-decoration:none; white-space:nowrap;
+  background:var(--pink); color:var(--ink); transition:opacity .2s, background .2s, color .2s;
+}
+.btn:hover{ opacity:.88; }
+.btn:disabled{ opacity:.35; cursor:default; }
+.btn--ghost{ background:transparent; color:var(--paper); box-shadow:inset 0 0 0 1px var(--line); }
+.btn--ghost:hover{ box-shadow:inset 0 0 0 1px var(--paper); opacity:1; }
+.btn--small{ padding:8px 14px; font-size:14px; }
+.icon{
+  appearance:none; border:0; cursor:pointer; font:inherit;
+  width:34px; height:34px; border-radius:50%; flex:none;
+  display:grid; place-items:center; font-size:14px;
+  background:var(--ink-3); color:var(--muted); transition:background .2s, color .2s;
+}
+.icon:hover{ background:var(--paper); color:var(--ink); }
+.icon:disabled{ opacity:.3; cursor:default; background:var(--ink-3); color:var(--muted); }
+.icon.danger:hover{ background:var(--pink); color:var(--ink); }
+
+/* fields */
+.field{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+.field > span{ font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+.field small{ color:var(--muted); font-size:13px; }
+input[type=text], input[type=url], input[type=date], input[type=password], textarea{
+  width:100%; font:inherit; font-size:16px; color:var(--paper);
+  background:var(--ink); border:1px solid var(--line); border-radius:12px;
+  padding:11px 13px; transition:border-color .2s;
+  color-scheme:dark;
+}
+textarea{ resize:vertical; min-height:70px; }
+input:focus, textarea:focus{ outline:none; border-color:var(--pink); }
+input::placeholder, textarea::placeholder{ color:rgba(244,245,245,.3); }
+
+/* sign in */
+.login{ min-height:100svh; display:grid; place-items:center; padding:24px; }
+.login__card{
+  width:min(560px,100%); background:var(--ink-2); border:1px solid var(--line);
+  border-radius:24px; padding:clamp(24px,5vw,40px);
+}
+.login__card h1{ font-size:clamp(32px,6vw,44px); font-weight:800; margin:18px 0 10px; }
+.login__card > p{ color:var(--muted); margin:0 0 22px; }
+.login__card form{ display:flex; flex-direction:column; gap:14px; }
+.login__error{ color:var(--pink); margin:0; }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--paper); }
+.brand img{ width:30px; height:30px; }
+.brand b{ font-size:20px; font-weight:800; letter-spacing:-.03em; }
+
+/* top bar */
+.top{
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:14px clamp(16px,4vw,40px);
+  background:rgba(14,14,14,.86); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.top .brand{ margin-right:auto; }
+.status{ display:flex; align-items:center; gap:8px; color:var(--muted); }
+.status::before{ content:""; width:8px; height:8px; border-radius:50%; background:var(--mindaro); }
+.status.is-dirty{ color:var(--paper); }
+.status.is-dirty::before{ background:var(--orange); }
+.status.is-busy::before{ background:var(--pink); animation:pulse 1s infinite alternate; }
+@keyframes pulse{ to{ opacity:.25; } }
+.top__actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+/* page */
+main{ width:min(1080px,100%); margin:0 auto; padding:clamp(20px,4vw,40px) clamp(16px,4vw,40px) 80px; }
+.intro{ margin:8px 0 28px; }
+.intro h1{ font-size:clamp(34px,6vw,58px); font-weight:800; }
+.intro p{ color:var(--muted); margin:10px 0 0; max-width:62ch; }
+.loading{ color:var(--muted); padding:60px 0; text-align:center; }
+
+nav.jump{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 26px; }
+nav.jump a{
+  text-decoration:none; color:var(--muted); font-size:14px;
+  padding:7px 13px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--line);
+}
+nav.jump a:hover{ color:var(--paper); box-shadow:inset 0 0 0 1px var(--paper); }
+
+.card{
+  background:var(--ink-2); border:1px solid var(--line); border-radius:22px;
+  padding:clamp(20px,3vw,32px); margin-bottom:20px; scroll-margin-top:90px;
+}
+.card__head{ margin-bottom:22px; }
+.card__head h2{ font-size:clamp(24px,3vw,32px); font-weight:800; }
+.card__head p{ color:var(--muted); margin:8px 0 0; max-width:68ch; }
+.card h3{ font-size:19px; font-weight:700; margin:28px 0 6px; }
+.card h3 + p{ color:var(--muted); margin:0 0 14px; font-size:15px; }
+.card h3:first-child{ margin-top:0; }
+.row{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:16px; }
+.actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.empty{ color:var(--muted); margin:0 0 12px; }
+
+details{ margin-top:22px; border-top:1px solid var(--line); padding-top:18px; }
+summary{ cursor:pointer; font-weight:700; }
+summary small{ color:var(--muted); font-weight:400; margin-left:6px; }
+
+/* open mic dates */
+.event{
+  display:grid; grid-template-columns:150px 1fr 1.6fr 1.4fr auto; gap:12px; align-items:end;
+  padding:16px; border:1px solid var(--line); border-radius:16px; margin-bottom:12px;
+  position:relative;
+}
+.event__tag{
+  position:absolute; top:-9px; left:14px; padding:2px 9px; border-radius:999px;
+  background:var(--ink-3); color:var(--muted); font-size:10px;
+}
+.event.is-next{ border-color:var(--pink); }
+.event.is-next .event__tag{ background:var(--pink); color:var(--ink); }
+.event.is-past{ opacity:.5; }
+
+/* photos */
+.gallery{ display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:12px; }
+.thumb{
+  margin:0; position:relative; aspect-ratio:4/5; border-radius:14px; overflow:hidden;
+  background:var(--ink-3); border:1px solid var(--line);
+}
+.thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.thumb figcaption{
+  position:absolute; left:6px; right:6px; bottom:6px;
+  display:flex; align-items:center; gap:4px;
+}
+.thumb figcaption .icon{ width:28px; height:28px; font-size:12px; background:rgba(14,14,14,.82); }
+.thumb figcaption .icon:hover{ background:var(--paper); }
+.thumb figcaption .icon.danger{ margin-left:auto; }
+.thumb figcaption .icon.danger:hover{ background:var(--pink); }
+.thumb__num{
+  position:absolute; top:7px; left:8px; padding:2px 7px; border-radius:999px;
+  background:rgba(14,14,14,.82); font-size:10px;
+}
+.thumb__new{
+  position:absolute; top:7px; right:8px; padding:2px 7px; border-radius:999px;
+  background:var(--mindaro); color:var(--ink); font-size:10px;
+}
+.thumb--add{
+  display:grid; place-items:center; text-align:center; cursor:pointer;
+  border-style:dashed; color:var(--muted); padding:10px; transition:color .2s, border-color .2s;
+}
+.thumb--add:hover{ color:var(--paper); border-color:var(--paper); }
+.thumb--add input{ position:absolute; width:1px; height:1px; opacity:0; }
+.thumb--add span{ font-weight:600; }
+
+/* numbers */
+.number{
+  display:grid; grid-template-columns:80px 120px 90px 1fr; gap:12px; align-items:end;
+  padding:14px 0; border-top:1px solid var(--line);
+}
+.number:first-of-type{ border-top:0; padding-top:0; }
+.number__show{ font-size:28px; font-weight:800; letter-spacing:-.04em; color:var(--pink); margin-bottom:6px; }
+
+/* chips */
+.chips{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.chip{
+  display:inline-flex; align-items:center; gap:4px; padding:5px 5px 5px 14px;
+  border-radius:999px; background:var(--ink-3); border:1px solid var(--line); font-weight:600;
+}
+.chip .icon{ width:26px; height:26px; font-size:11px; background:transparent; }
+.chip .icon:hover{ background:var(--pink); }
+.chip-add{ display:inline-flex; gap:6px; }
+.chip-add input{ width:200px; padding:8px 12px; border-radius:999px; }
+
+/* team */
+.person{
+  display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:start;
+  padding:18px; border:1px solid var(--line); border-radius:16px; margin-bottom:12px;
+}
+.person__fields{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.avatar{
+  position:relative; width:104px; height:104px; border-radius:50%; overflow:hidden; cursor:pointer;
+  background:var(--ink-3); border:1px dashed var(--line);
+  display:grid; place-items:center; color:var(--muted); font-size:13px; text-align:center;
+}
+.avatar img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.avatar input{ position:absolute; width:1px; height:1px; opacity:0; }
+.avatar::after{
+  content:"Change"; position:absolute; inset:0; display:grid; place-items:center;
+  background:rgba(14,14,14,.7); color:var(--paper); font-size:13px; font-weight:600;
+  opacity:0; transition:opacity .2s;
+}
+.avatar:hover::after{ opacity:1; }
+
+.links{ display:grid; gap:14px; }
+
+.foot{ color:var(--muted); font-size:14px; text-align:center; margin-top:30px; }
+.foot button{ appearance:none; border:0; background:none; color:var(--pink); font:inherit; cursor:pointer; text-decoration:underline; padding:0; }
+
+/* toast */
+.toast{
+  position:fixed; left:50%; bottom:22px; z-index:20; transform:translate(-50%,20px);
+  width:max-content; max-width:calc(100vw - 32px);
+  padding:13px 20px; border-radius:16px; background:var(--paper); color:var(--ink); font-weight:600;
+  box-shadow:0 14px 40px rgba(0,0,0,.5); opacity:0; pointer-events:none;
+  transition:opacity .25s, transform .25s;
+}
+.toast.is-on{ opacity:1; transform:translate(-50%,0); }
+.toast.is-error{ background:var(--pink); }
+
+@media (max-width:860px){
+  .event{ grid-template-columns:1fr 1fr; padding-top:22px; }
+  .event .icon{ position:absolute; top:10px; right:10px; }
+  .number{ grid-template-columns:70px 1fr 80px; }
+  .number .field:last-child{ grid-column:1 / -1; }
+  .person{ grid-template-columns:auto 1fr; }
+  .person__fields{ grid-column:1 / -1; grid-row:2; }
+}
+@media (max-width:560px){
+  .row, .person__fields{ grid-template-columns:1fr; }
+  .event{ grid-template-columns:1fr; }
+  .top__actions{ width:100%; }
+  .top__actions .btn{ flex:1; }
+  .chip-add{ width:100%; }
+  .chip-add input{ flex:1; width:auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SIGN IN ============ -->
+<div class="login" id="login" hidden>
+  <div class="login__card">
+    <a class="brand" href="../"><img src="../images/logo.png" alt="" /><b>raahe.live</b></a>
+    <h1>Dashboard</h1>
+    <p>Sign in to change open mic dates, photos, numbers and links.</p>
+    <form id="loginForm" method="post">
+      <label class="field">
+        <span>Username</span>
+        <input type="text" id="userInput" autocomplete="username" autocapitalize="none" spellcheck="false" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="passInput" autocomplete="current-password" required />
+      </label>
+      <button class="btn" type="submit" id="loginBtn">Sign in</button>
+      <p class="login__error" id="loginError" role="alert" hidden></p>
+    </form>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="app" hidden>
+  <header class="top">
+    <a class="brand" href="../" target="_blank" rel="noopener"><img src="../images/logo.png" alt="" /><b>raahe.live</b></a>
+    <span class="status" id="status" role="status">Loading…</span>
+    <div class="top__actions">
+      <button class="btn btn--ghost" type="button" id="discard" hidden>Undo changes</button>
+      <button class="btn btn--ghost" type="button" id="preview">Preview</button>
+      <button class="btn" type="button" id="publish" disabled>Publish</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="intro">
+      <h1>What's on the site</h1>
+      <p>Change anything below, check it with <b>Preview</b>, then hit <b>Publish</b>. The live site updates about a minute later.</p>
+    </div>
+    <nav class="jump" aria-label="Sections">
+      <a href="#sec-mic">Next open mic</a>
+      <a href="#sec-photos">Photos</a>
+      <a href="#sec-numbers">Numbers</a>
+      <a href="#sec-lists">Partners and disciplines</a>
+      <a href="#sec-team">Team</a>
+      <a href="#sec-links">Links</a>
+    </nav>
+    <div id="sections"><p class="loading">Loading the site's content from GitHub…</p></div>
+    <p class="foot">Signed in as raahe.live. <button type="button" id="signOut">Sign out</button></p>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -53,7 +53,7 @@
     <a href="#floor">Join</a>
   </nav>
 
-  <a class="nav__ig" href="https://www.instagram.com/raahe.live" target="_blank" rel="noopener" aria-label="Raahe on Instagram">
+  <a class="nav__ig" data-link="instagram" href="https://www.instagram.com/raahe.live" target="_blank" rel="noopener" aria-label="Raahe on Instagram">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
       <rect x="3" y="3" width="18" height="18" rx="5"/>
       <circle cx="12" cy="12" r="4.2"/>
@@ -99,7 +99,7 @@
 
     <div class="hero__actions reveal">
       <a class="btn btn--pink magnetic" href="#encore"><span>Register as an artist</span></a>
-      <a class="btn btn--ghost magnetic" href="https://beacons.ai/raahe" target="_blank" rel="noopener"><span>Attend the open mic</span></a>
+      <a class="btn btn--ghost magnetic" data-link="tickets" href="https://beacons.ai/raahe" target="_blank" rel="noopener"><span>Attend the open mic</span></a>
     </div>
   </div>
 
@@ -235,7 +235,7 @@
 
   <!-- Disciplines we book. Written out twice so the loop never jumps. -->
   <div class="ticker" aria-hidden="true">
-    <div class="ticker__track" data-marquee data-speed="0.6">
+    <div class="ticker__track" id="disciplines" data-marquee data-speed="0.6">
       <span>Singers</span><i>✳</i><span>Stand-up comedians</span><i>✳</i><span>Dancers</span><i>✳</i>
       <span>Instrumentalists</span><i>✳</i><span>Storytellers</span><i>✳</i><span>Poets</span><i>✳</i>
       <span>Rappers</span><i>✳</i><span>Beatboxers</span><i>✳</i><span>Actors</span><i>✳</i><span>Bands</span><i>✳</i>
@@ -333,7 +333,7 @@
     </p>
   </header>
 
-  <div class="scores">
+  <div class="scores" id="scores">
     <div class="score reveal">
       <span class="score__num" data-count="200" data-suffix="+">0+</span>
       <p>performance gigs and opportunities given to our artists</p>
@@ -355,7 +355,7 @@
   <div class="trusted">
     <p class="trusted__label mono reveal">Rooms and brands we have worked with</p>
     <div class="ticker ticker--sm">
-      <div class="ticker__track" data-marquee data-speed="0.35" data-dir="1">
+      <div class="ticker__track" id="partners" data-marquee data-speed="0.35" data-dir="1">
         <span>Starbucks</span><i>·</i><span>Obeya</span><i>·</i><span>Forum South Bengaluru</span><i>·</i>
         <span>SOCIAL</span><i>·</i><span>Under 25</span><i>·</i><span>Atta Galatta</span><i>·</i><span>PJJA</span><i>·</i><span>BuzzEnt</span><i>·</i><span>Homegrown</span><i>·</i>
         <span>Starbucks</span><i>·</i><span>Obeya</span><i>·</i><span>Forum South Bengaluru</span><i>·</i>
@@ -387,7 +387,7 @@
   <!-- Photos from the open mics. Save them into images/ as openmic-01.jpg to openmic-10.jpg.
        Both halves of this list must match or the loop will jump. -->
   <div class="strip" aria-label="Photos from Raahe Open Mics">
-    <div class="strip__track" data-marquee data-speed="0.55">
+    <div class="strip__track" id="openmicPhotos" data-marquee data-speed="0.55">
       <figure class="shot"><img src="images/openmic-01.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
       <figure class="shot"><img src="images/openmic-03.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
       <figure class="shot"><img src="images/openmic-04.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
@@ -411,7 +411,7 @@
   </div>
 
   <h3 class="sub reveal">The open mic in numbers</h3>
-  <ul class="facts">
+  <ul class="facts" id="facts">
     <li class="reveal"><b data-count="1300" data-suffix="+">0+</b><span>people through the door in the last year</span></li>
     <li class="reveal"><b data-count="15" data-suffix="+">0+</b><span>open mics we have run so far</span></li>
     <li class="reveal"><b data-count="20" data-suffix="+">0+</b><span>new artists on stage at every event</span></li>
@@ -419,12 +419,13 @@
     <li class="reveal"><b class="fact__word">#1</b><span>result for Open Mic on the Zomato District app</span></li>
   </ul>
 
-  <aside class="tickets reveal">
+  <aside class="tickets reveal" id="nextMic">
     <div class="tickets__copy">
       <p class="mono">Next open mic</p>
       <h3>Saturday 17 October, 5 pm onwards</h3>
       <p class="tickets__where">Starbucks, Vittal Mallya Road, Bengaluru</p>
       <p class="tickets__sub">Come to watch, or put your name down to play. Tickets are live now.</p>
+      <p class="tickets__more mono" hidden></p>
     </div>
     <a class="btn btn--dark btn--xl magnetic" href="https://beacons.ai/raahe" target="_blank" rel="noopener">
       <span>Grab your tickets</span>
@@ -451,7 +452,7 @@
 
   <!-- Artists from the program. Save them into images/ as artist-01.jpg to artist-10.jpg. -->
   <div class="strip strip--tall" aria-label="Artists in the program">
-    <div class="strip__track" data-marquee data-speed="0.4" data-dir="1">
+    <div class="strip__track" id="artistPhotos" data-marquee data-speed="0.4" data-dir="1">
       <figure class="shot"><img src="images/artist-01.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
       <figure class="shot"><img src="images/artist-02.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
       <figure class="shot"><img src="images/artist-03.jpg" alt="" loading="lazy" onerror="this.remove()"></figure>
@@ -483,7 +484,7 @@
   </ul>
 
   <div class="program__actions reveal">
-    <a class="btn btn--pink magnetic" href="https://forms.gle/EJzCDZ1ePk9BEDeB6" target="_blank" rel="noopener"><span>Apply to the program</span></a>
+    <a class="btn btn--pink magnetic" data-link="program" href="https://forms.gle/EJzCDZ1ePk9BEDeB6" target="_blank" rel="noopener"><span>Apply to the program</span></a>
   </div>
 </section>
 
@@ -500,7 +501,7 @@
         live show actually comes together, and meet the people who make them, put your name down.
         No experience needed.
       </p>
-      <a class="btn btn--pink magnetic reveal" href="https://forms.gle/J3LD7gMRJDp9Z1qB9" target="_blank" rel="noopener"><span>Volunteer with us</span></a>
+      <a class="btn btn--pink magnetic reveal" data-link="volunteer" href="https://forms.gle/J3LD7gMRJDp9Z1qB9" target="_blank" rel="noopener"><span>Volunteer with us</span></a>
     </div>
   </div>
 </section>
@@ -526,7 +527,7 @@
         in it. If you just like watching people be good at something, that counts. Members hear
         about every lineup, every gig call and every collab first.
       </p>
-      <a class="btn btn--dark magnetic" href="https://chat.whatsapp.com/CGD7uKPn3BQFkPsDJWqenl" target="_blank" rel="noopener"><span>Join the community</span></a>
+      <a class="btn btn--dark magnetic" data-link="community" href="https://chat.whatsapp.com/CGD7uKPn3BQFkPsDJWqenl" target="_blank" rel="noopener"><span>Join the community</span></a>
     </article>
 
     <article class="panel panel--orange reveal">
@@ -555,7 +556,7 @@
     </p>
   </header>
 
-  <div class="crew">
+  <div class="crew" id="crew">
     <article class="member reveal">
       <div class="member__photo">
         <img src="images/tanish.jpg" alt="Tanish Raj" loading="lazy" onerror="this.remove()" />
@@ -655,7 +656,7 @@
     </div>
     <div class="footer__col">
       <p class="mono">Elsewhere</p>
-      <a href="https://www.instagram.com/raahe.live" target="_blank" rel="noopener">Instagram</a>
+      <a data-link="instagram" href="https://www.instagram.com/raahe.live" target="_blank" rel="noopener">Instagram</a>
     </div>
     <div class="footer__col">
       <p class="mono">Site</p>
@@ -706,6 +707,9 @@
   </defs>
 </svg>
 
+<!-- Dates, photos, numbers, partners, team and links come from content.js,
+     which the dashboard at /admin writes. The copies in this file are a fallback. -->
+<script src="content.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
