@@ -169,7 +169,7 @@ async function prepare (file, kind, max) {
 }
 
 function picture (path, alt = '') {
-  const img = h('img', { src: localImages.get(path) || '../' + path, alt, loading: 'lazy' });
+  const img = h('img', { src: localImages.get(path) || '/' + path, alt, loading: 'lazy' });
   // A photo published from another device may not be on the live site yet.
   img.addEventListener('error', () => {
     if (!img.dataset.retried) { img.dataset.retried = '1'; img.src = RAW + path; }
@@ -474,7 +474,7 @@ $('#preview').addEventListener('click', () => {
     localStorage.setItem('raahe-preview', JSON.stringify({ content: state, images: {} }));
     toast('Too many new photos to preview at once. They show as blank tiles until you publish.', true);
   }
-  window.open('../index.html?preview', 'raahe-preview');
+  window.open('/?preview', 'raahe-preview');
 });
 
 window.addEventListener('beforeunload', e => {
@@ -484,6 +484,7 @@ window.addEventListener('beforeunload', e => {
 /* ---------- sign in ---------- */
 
 function showLogin (error) {
+  $('#booting').hidden = true;
   $('#app').hidden = true;
   $('#login').hidden = false;
   $('#loginError').hidden = !error;
@@ -492,6 +493,7 @@ function showLogin (error) {
 }
 
 function showApp () {
+  $('#booting').hidden = true;
   $('#login').hidden = true;
   $('#app').hidden = false;
 }

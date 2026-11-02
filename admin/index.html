@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Raahe dashboard</title>
-<link rel="icon" href="../favicon.png" type="image/png" />
+<link rel="icon" href="/favicon.png" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=League+Spartan:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -254,10 +254,12 @@ summary small{ color:var(--muted); font-weight:400; margin-left:6px; }
 </head>
 <body>
 
+<p class="loading" id="booting">Loading…</p>
+
 <!-- ============ SIGN IN ============ -->
 <div class="login" id="login" hidden>
   <div class="login__card">
-    <a class="brand" href="../"><img src="../images/logo.png" alt="" /><b>raahe.live</b></a>
+    <a class="brand" href="/"><img src="/images/logo.png" alt="" /><b>raahe.live</b></a>
     <h1>Dashboard</h1>
     <p>Sign in to change open mic dates, photos, numbers and links.</p>
     <form id="loginForm" method="post">
@@ -278,7 +280,7 @@ summary small{ color:var(--muted); font-weight:400; margin-left:6px; }
 <!-- ============ DASHBOARD ============ -->
 <div id="app" hidden>
   <header class="top">
-    <a class="brand" href="../" target="_blank" rel="noopener"><img src="../images/logo.png" alt="" /><b>raahe.live</b></a>
+    <a class="brand" href="/" target="_blank" rel="noopener"><img src="/images/logo.png" alt="" /><b>raahe.live</b></a>
     <span class="status" id="status" role="status">Loading…</span>
     <div class="top__actions">
       <button class="btn btn--ghost" type="button" id="discard" hidden>Undo changes</button>
@@ -307,6 +309,6 @@ summary small{ color:var(--muted); font-weight:400; margin-left:6px; }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js"></script>
+<script src="/admin/app.js"></script>
 </body>
 </html>
