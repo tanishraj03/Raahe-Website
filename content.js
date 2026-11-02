@@ -44,17 +44,62 @@ window.RAAHE_CONTENT = {
     ]
   },
   "stats": [
-    { "prefix": "", "value": "200", "suffix": "+", "label": "performance gigs and opportunities given to our artists" },
-    { "prefix": "₹", "value": "27", "suffix": "L+", "label": "paid out to artists for performances, gigs and content" },
-    { "prefix": "", "value": "100", "suffix": "+", "label": "artists scouted and helped to their first paycheck" },
-    { "prefix": "", "value": "1000", "suffix": "+", "label": "community members who have joined us at Raahe" }
+    {
+      "prefix": "",
+      "value": "200",
+      "suffix": "+",
+      "label": "performance gigs and opportunities given to our artists"
+    },
+    {
+      "prefix": "₹",
+      "value": "27",
+      "suffix": "L+",
+      "label": "paid out to artists for performances, gigs and content"
+    },
+    {
+      "prefix": "",
+      "value": "100",
+      "suffix": "+",
+      "label": "artists scouted and helped to their first paycheck"
+    },
+    {
+      "prefix": "",
+      "value": "1000",
+      "suffix": "+",
+      "label": "community members who have joined us at Raahe"
+    }
   ],
   "openMicStats": [
-    { "prefix": "", "value": "1300", "suffix": "+", "label": "people through the door in the last year" },
-    { "prefix": "", "value": "15", "suffix": "+", "label": "open mics we have run so far" },
-    { "prefix": "", "value": "20", "suffix": "+", "label": "new artists on stage at every event" },
-    { "prefix": "", "value": "40", "suffix": "+", "label": "small businesses supported through our open mics" },
-    { "prefix": "", "value": "#1", "suffix": "", "label": "result for Open Mic on the Zomato District app" }
+    {
+      "prefix": "",
+      "value": "1300",
+      "suffix": "+",
+      "label": "people through the door in the last year"
+    },
+    {
+      "prefix": "",
+      "value": "15",
+      "suffix": "+",
+      "label": "open mics we have run so far"
+    },
+    {
+      "prefix": "",
+      "value": "20",
+      "suffix": "+",
+      "label": "new artists on stage at every event"
+    },
+    {
+      "prefix": "",
+      "value": "40",
+      "suffix": "+",
+      "label": "small businesses supported through our open mics"
+    },
+    {
+      "prefix": "",
+      "value": "#1",
+      "suffix": "",
+      "label": "result for Open Mic on the Zomato District app"
+    }
   ],
   "partners": [
     "Starbucks",
@@ -63,9 +108,9 @@ window.RAAHE_CONTENT = {
     "SOCIAL",
     "Under 25",
     "Atta Galatta",
-    "PJJA",
     "BuzzEnt",
-    "Homegrown"
+    "Homegrown",
+    "Pijja"
   ],
   "disciplines": [
     "Singers",
